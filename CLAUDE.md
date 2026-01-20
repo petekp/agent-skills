@@ -1,4 +1,4 @@
-# petekp/skills
+# petekp/agent-skills
 
 Agent skills monorepo for the Claude Code marketplace.
 

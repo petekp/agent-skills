@@ -6,10 +6,10 @@
 
 ```bash
 # Install all skills
-npx add-skill petekp/skills
+npx add-skill petekp/agent-skills
 
 # Or install individually via Claude Code
-/plugin install petekp/skills
+/plugin install petekp/agent-skills
 ```
 
 ## Available Skills
@@ -40,7 +40,7 @@ skills/tuning-panel/
 ## Structure
 
 ```
-petekp/skills/
+petekp/agent-skills/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── skills/
