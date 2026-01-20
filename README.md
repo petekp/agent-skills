@@ -6,10 +6,10 @@
 
 ```bash
 # Install all skills
-npx add-skill petepetrash/skills
+npx add-skill petekp/skills
 
 # Or install individually via Claude Code
-/plugin install petepetrash/skills
+/plugin install petekp/skills
 ```
 
 ## Available Skills
@@ -40,7 +40,7 @@ skills/tuning-panel/
 ## Structure
 
 ```
-petepetrash/skills/
+petekp/skills/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── skills/
