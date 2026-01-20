@@ -1,4 +1,4 @@
-# agent-skills
+# pete's agent skills
 
 [Agent Skills](https://agentskills.io) for UI development, parameter tuning, and design iteration.
 
