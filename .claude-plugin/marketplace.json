@@ -1,18 +1,23 @@
 {
-  "name": "petekp-skills",
-  "description": "Agent skills for UI development, parameter tuning, and design iteration",
+  "name": "petekp-agent-skills",
   "owner": {
     "name": "Pete Petrash",
     "email": "petekp@users.noreply.github.com"
   },
+  "metadata": {
+    "description": "Agent skills for UI development, parameter tuning, and design iteration",
+    "version": "0.1.0"
+  },
   "plugins": [
     {
-      "name": "tuning-panel",
-      "description": "Create bespoke parameter tuning panels for iterating on animations, layouts, colors, typography, physics, or any visual parameters. Supports leva (React), tweakpane (vanilla JS), and SwiftUI.",
-      "version": "0.1.0",
+      "name": "agent-skills",
+      "description": "Skills for SwiftUI, Rust, and parameter tuning",
       "source": "./",
+      "strict": false,
       "skills": [
-        "skills/tuning-panel"
+        "./skills/tuning-panel",
+        "./skills/rust",
+        "./skills/swiftui"
       ]
     }
   ]
