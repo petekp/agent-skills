@@ -26,16 +26,29 @@ Create bespoke parameter tuning panels for iterating on animations, layouts, col
 
 **Supports:** leva (React), tweakpane (vanilla JS), dat.GUI, SwiftUI native controls
 
-```
-skills/tuning-panel/
-├── SKILL.md
-├── references/
-│   ├── platform-libraries.md
-│   └── parameter-categories.md
-└── examples/
-    ├── react-leva-animation.tsx
-    └── export-format.md
-```
+### rust
+
+Robust Rust patterns for file-backed data, parsing, persistence, FFI boundaries, and system integration.
+
+**Trigger phrases:**
+- "write Rust for file handling"
+- "Rust subprocess integration"
+- "Serde serialization patterns"
+- "UniFFI boundaries"
+
+**Covers:** UTF-8 safety, atomic writes, state machines, defensive error handling
+
+### swiftui
+
+Build world-class SwiftUI interfaces for iOS, iPadOS, macOS, and visionOS.
+
+**Trigger phrases:**
+- "build SwiftUI interface"
+- "Liquid Glass adoption"
+- "SwiftUI animations"
+- "Apple-level UI quality"
+
+**Covers:** Layout patterns, state management, design tokens, performance, accessibility
 
 ## Structure
 
@@ -44,7 +57,9 @@ petekp/agent-skills/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── skills/
-│   └── tuning-panel/
+│   ├── tuning-panel/
+│   ├── rust/
+│   └── swiftui/
 └── README.md
 ```
 
