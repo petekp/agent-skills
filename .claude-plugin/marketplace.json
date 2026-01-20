@@ -1,0 +1,19 @@
+{
+  "name": "petepetrash-skills",
+  "description": "Agent skills for UI development, parameter tuning, and design iteration",
+  "owner": {
+    "name": "Pete Petrash",
+    "email": "pete@petrash.dev"
+  },
+  "plugins": [
+    {
+      "name": "tuning-panel",
+      "description": "Create bespoke parameter tuning panels for iterating on animations, layouts, colors, typography, physics, or any visual parameters. Supports leva (React), tweakpane (vanilla JS), and SwiftUI.",
+      "version": "0.1.0",
+      "source": "./",
+      "skills": [
+        "skills/tuning-panel"
+      ]
+    }
+  ]
+}
