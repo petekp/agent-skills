@@ -17,13 +17,6 @@
       "skills": ["./skills/rust"]
     },
     {
-      "name": "swiftui",
-      "description": "Build world-class SwiftUI interfaces for iOS, iPadOS, macOS, and visionOS",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/swiftui"]
-    },
-    {
       "name": "tuning-panel",
       "description": "Create bespoke parameter tuning panels for iterating on animations, layouts, colors, typography, physics, or any visual parameters",
       "source": "./",
