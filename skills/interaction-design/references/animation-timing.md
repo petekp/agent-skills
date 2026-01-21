@@ -1,15 +1,171 @@
 # Animation Timing Reference
 
-Detailed timing curves, spring configurations, and animation patterns for interaction design.
+Animation as a design tool: when to use it, when to avoid it, what it communicates, and how to implement it.
 
 ## Table of Contents
+- [Animation Philosophy](#animation-philosophy)
+- [When to Animate](#when-to-animate)
+- [When NOT to Animate](#when-not-to-animate)
+- [Emotional Qualities](#emotional-qualities)
 - [Duration Guidelines](#duration-guidelines)
 - [Easing Functions](#easing-functions)
 - [Spring Physics](#spring-physics)
 - [Animation Patterns by Component](#animation-patterns-by-component)
 - [Choreography & Sequencing](#choreography--sequencing)
 - [Reduced Motion](#reduced-motion)
-- [Platform-Specific Curves](#platform-specific-curves)
+- [Discovering the Right Animation](#discovering-the-right-animation)
+
+---
+
+## Animation Philosophy
+
+Animation is not decoration. It is communication.
+
+Every animation should answer: **What purpose does this serve?** If you cannot articulate the purpose, the animation may be excise—wasted time and attention.
+
+### What Animation Can Communicate
+
+| Purpose | How Animation Helps |
+|---------|---------------------|
+| **Object constancy** | Show that A transformed into B, not that A disappeared and B appeared |
+| **Causality** | This action caused that result |
+| **Spatial relationship** | This came from there, went to here |
+| **State change** | Something is different now |
+| **Feedback** | Your action was received |
+| **Attention direction** | Look here, this is important |
+| **Pacing** | This moment deserves weight |
+| **Personality** | This system is [playful/serious/calm/energetic] |
+
+### Animation as Excise
+
+Animation becomes excise when:
+- User must wait through it repeatedly
+- It doesn't communicate anything the user needs
+- It delays feedback they're waiting for
+- It prioritizes aesthetics over task completion
+- Expert users can't skip or accelerate it
+
+**The habituation test:** After performing this action 100 times, will the animation still serve a purpose, or will it just be delay?
+
+---
+
+## When to Animate
+
+### Animate for These Purposes
+
+**Maintaining object constancy**
+When an object transforms, animation shows continuity. Without it: "Where did that go? What is this?"
+- Opening a folder → items emerge from folder
+- Expanding an accordion → content reveals from header
+- Modal opening → grows from trigger button
+
+**Communicating causality**
+Animation shows cause and effect, reinforcing the user's mental model.
+- Drag an item → it follows the cursor → lands where released
+- Press button → button depresses → action occurs
+- Swipe to delete → item slides away → slot closes
+
+**Reducing change blindness**
+Without animation, users may miss changes. Animation draws attention.
+- New notification → slides in from edge
+- Content update → brief highlight/pulse
+- Error appears → field shakes or error fades in
+
+**Providing feedback**
+Animation confirms actions were received, especially before results are visible.
+- Button press → immediate visual response (scale, color)
+- Form submit → button shows loading state
+- Save → brief checkmark or pulse
+
+**Conveying emotional tone**
+Animation expresses personality and sets expectations.
+- Playful app → bouncy springs, overshoots
+- Professional tool → crisp, minimal transitions
+- Calming experience → slow, gentle easing
+
+### The Quick Test
+
+Before adding animation, ask:
+1. What does this animation *communicate*?
+2. Will users need this communication on the 100th use?
+3. Is this animation faster than the alternative (instant change)?
+4. Does this animation serve the user's goal or mine?
+
+---
+
+## When NOT to Animate
+
+### Don't Animate These Situations
+
+**Habitual actions**
+Expert users performing routine tasks don't need animation—they've already moved on mentally.
+- Rapid keyboard shortcuts
+- Frequent toggles
+- Repeated actions in a workflow
+
+**When speed is critical**
+Animation that blocks task completion is excise.
+- Browsing many items quickly
+- Data entry workflows
+- Comparison shopping
+
+**When users indicate reduced motion**
+Respect `prefers-reduced-motion`. Some users experience motion sickness, distraction, or have vestibular disorders.
+
+**When animation would obscure**
+Sometimes instant changes are clearer than animated ones.
+- Small text changes
+- Number updates (often clearer to just change)
+- Rapid state cycling
+
+**When it's purely aesthetic**
+If the animation serves no cognitive or communicative purpose, question whether it's needed.
+
+### Alternatives to Animation
+
+| Instead of... | Consider... |
+|---------------|-------------|
+| Slow fade transitions | Instant change with subtle highlight |
+| Sliding panels | Cut with clear spatial layout |
+| Progress animation | Static progress bar |
+| Loading spinner | Skeleton screen (no animation) |
+| Bouncy micro-interactions | Crisp state changes |
+
+---
+
+## Emotional Qualities
+
+Animation isn't just timing—it carries emotional meaning.
+
+### Spring Characteristics and Personality
+
+| Spring Type | Personality | Use For |
+|-------------|-------------|---------|
+| **Stiff, fast** | Precise, professional, efficient | Business apps, productivity tools |
+| **Gentle, slow** | Calm, comfortable, trustworthy | Healthcare, finance, meditation |
+| **Bouncy** | Playful, young, energetic | Games, social apps, celebrations |
+| **Snappy** | Responsive, modern, confident | Interactive tools, creative apps |
+
+### Easing and Meaning
+
+| Easing | Emotional Quality |
+|--------|-------------------|
+| **Ease-out (decelerate)** | Welcoming, arriving, settling in |
+| **Ease-in (accelerate)** | Departing, dismissing, decisive exit |
+| **Linear** | Mechanical, neutral, continuous process |
+| **Ease-in-out** | Natural, breathing, cyclical |
+| **Overshoot** | Energetic, playful, attention-grabbing |
+
+### Matching Animation to Context
+
+| Context | Appropriate Animation |
+|---------|----------------------|
+| Error recovery | Fast, minimal (don't delay) |
+| Celebration | Bouncy, extended (mark the moment) |
+| Navigation | Quick, directional (maintain orientation) |
+| Loading | Calm, rhythmic (patience) |
+| Confirmation | Brief, satisfying (closure) |
+| Danger/warning | Sharp, attention-grabbing (urgency) |
 
 ---
 
@@ -17,34 +173,36 @@ Detailed timing curves, spring configurations, and animation patterns for intera
 
 ### By Interaction Scale
 
-| Scale | Duration | Use Cases |
-|-------|----------|-----------|
-| Micro | 50-150ms | Button press, toggle, checkbox |
-| Small | 150-250ms | Tooltip, dropdown, state change |
-| Medium | 250-400ms | Modal, sidebar, card flip |
-| Large | 400-600ms | Page transition, onboarding reveal |
-| Extra Large | 600-1000ms | Complex orchestrated sequences |
+| Scale | Duration | Use Cases | User Perception |
+|-------|----------|-----------|-----------------|
+| Micro | 50-150ms | Button press, toggle | Instant feedback |
+| Small | 150-250ms | Tooltip, dropdown | Brief, responsive |
+| Medium | 250-400ms | Modal, sidebar | Noticeable, smooth |
+| Large | 400-600ms | Page transition | Deliberate, weighty |
 
-### By Distance Traveled
+### The Cognitive Thresholds
 
-| Distance | Recommended Duration |
-|----------|---------------------|
-| < 100px | 150-200ms |
-| 100-300px | 200-350ms |
-| 300-500px | 300-450ms |
-| > 500px | 400-600ms |
-
-### The 100ms Rule
-
-- **< 100ms**: Feels instant, no easing needed
-- **100-300ms**: Perceptible motion, use easing
-- **> 300ms**: Noticeable animation, use strong easing
+- **< 100ms**: Perceived as instant. No easing needed.
+- **100-300ms**: Motion is perceptible but feels responsive.
+- **300-500ms**: Animation is noticed as animation.
+- **> 500ms**: Animation demands attention, feels slow unless serving a purpose.
 
 ### Entry vs Exit
 
 Exit animations should be faster than entry:
-- Entry: 250-350ms (welcoming, smooth)
-- Exit: 150-250ms (decisive, quick)
+- **Entry**: 250-350ms — Welcoming, gives time to perceive
+- **Exit**: 150-250ms — Decisive, gets out of the way
+
+**Why?** Users trigger exits intentionally; they're ready to move on. Entries surprise users; they need time to orient.
+
+### By Distance
+
+| Distance | Duration | Rationale |
+|----------|----------|-----------|
+| < 100px | 150-200ms | Close movements should be quick |
+| 100-300px | 200-350ms | Medium travel, medium time |
+| 300-500px | 300-450ms | Longer journeys need time |
+| > 500px | 400-600ms | Very long movements need tracking time |
 
 ---
 
@@ -62,99 +220,92 @@ linear:      cubic-bezier(0, 0, 1, 1)
 
 ### Recommended Curves
 
-**Standard (ease-out)** — Elements entering, responding to user
+**Standard (ease-out)** — Default for most UI animations
 ```
 cubic-bezier(0.2, 0, 0, 1)
 ```
-Fast start, gentle deceleration. Default choice.
 
-**Decelerate** — Elements appearing from offscreen
+**Decelerate** — Elements entering from offscreen
 ```
 cubic-bezier(0, 0, 0.2, 1)
 ```
-Enters at velocity, smoothly stops.
 
 **Accelerate** — Elements leaving the screen
 ```
 cubic-bezier(0.4, 0, 1, 1)
 ```
-Starts slow, exits quickly.
 
-**Sharp** — Elements that change size or shape
+**Sharp** — Size/shape changes
 ```
 cubic-bezier(0.4, 0, 0.6, 1)
 ```
-Quick transition, minimal oversimplification.
 
-**Overshoot** — Playful, bouncy feel
+**Overshoot** — Playful bounce (use sparingly)
 ```
 cubic-bezier(0.34, 1.56, 0.64, 1)
 ```
-Exceeds target, settles back. Use sparingly.
 
-### When to Use Each
+### Choosing Easing
 
-| Scenario | Easing | Why |
-|----------|--------|-----|
-| Fade in | ease-out | Welcoming arrival |
-| Fade out | ease-in | Decisive departure |
-| Hover state | ease-out | Responsive to user |
-| Slide in panel | ease-out | Smooth deceleration into view |
-| Slide out panel | ease-in | Accelerates out of way |
-| Modal backdrop | linear | Consistent dim effect |
-| Bounce/playful | overshoot | Personality, delight |
-| Loading pulse | ease-in-out | Continuous, rhythmic |
+| Scenario | Easing | Rationale |
+|----------|--------|-----------|
+| Element appearing | ease-out | Arrives with energy, settles smoothly |
+| Element disappearing | ease-in | Accelerates away decisively |
+| Element responding to user | ease-out | Immediate response, smooth result |
+| Looping animation | ease-in-out | Natural, breathing rhythm |
+| Background/passive | linear | Doesn't draw attention |
+| Celebratory moment | overshoot | Playful, attention-grabbing |
 
 ---
 
 ## Spring Physics
 
-Spring animations feel natural because they model real-world physics. Key parameters:
+Springs feel natural because they model physical behavior. Use springs when direct manipulation feeling is important.
 
 ### Spring Parameters
 
-| Parameter | Effect | Typical Range |
-|-----------|--------|---------------|
-| **Mass** | Weight of element; higher = slower | 0.5-2 |
-| **Stiffness** | Spring tightness; higher = snappier | 100-500 |
-| **Damping** | Resistance; higher = less bounce | 10-40 |
+| Parameter | Effect | Range |
+|-----------|--------|-------|
+| **Stiffness** (tension) | How snappy/rigid | 100-500 |
+| **Damping** (friction) | How quickly it settles | 10-40 |
+| **Mass** | Weight/inertia | 0.5-2 |
 
 ### Common Presets
 
-**Gentle** — Soft, flowing motion
+**Gentle** — Smooth, flowing
 ```
-mass: 1, stiffness: 120, damping: 14
+stiffness: 120, damping: 14
 ```
-Use for: Large panels, page transitions.
+Use for: Large panels, page transitions, calming interfaces
 
-**Snappy** — Quick, responsive
+**Snappy** — Responsive, modern
 ```
-mass: 1, stiffness: 300, damping: 20
+stiffness: 300, damping: 20
 ```
-Use for: Buttons, toggles, small UI elements.
+Use for: Buttons, toggles, interactive elements
 
 **Bouncy** — Playful, energetic
 ```
-mass: 1, stiffness: 200, damping: 10
+stiffness: 200, damping: 10
 ```
-Use for: Celebrations, notifications, fun interactions.
+Use for: Celebrations, gamified elements, youthful brands
 
-**Stiff** — Minimal oscillation
+**Stiff** — Precise, minimal oscillation
 ```
-mass: 1, stiffness: 400, damping: 30
+stiffness: 400, damping: 30
 ```
-Use for: Precision controls, professional apps.
+Use for: Professional tools, precise controls
 
-### Spring Libraries
+### Library Syntax
 
 **Framer Motion (React)**
 ```jsx
-<motion.div animate={{ x: 100 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} />
+transition={{ type: "spring", stiffness: 300, damping: 20 }}
 ```
 
 **React Spring**
 ```jsx
-useSpring({ to: { x: 100 }, config: { tension: 300, friction: 20 } })
+config: { tension: 300, friction: 20 }
 ```
 
 **SwiftUI**
@@ -162,132 +313,52 @@ useSpring({ to: { x: 100 }, config: { tension: 300, friction: 20 } })
 .animation(.spring(response: 0.5, dampingFraction: 0.7))
 ```
 
-### Converting Between Systems
-
-| Framer Motion | React Spring | Approximate |
-|---------------|--------------|-------------|
-| stiffness: 100 | tension: 100 | Gentle |
-| stiffness: 300 | tension: 300 | Snappy |
-| damping: 10 | friction: 10 | Bouncy |
-| damping: 30 | friction: 30 | Stiff |
-
 ---
 
 ## Animation Patterns by Component
 
 ### Buttons
 
-**Hover**
-- Property: background-color, box-shadow
-- Duration: 150ms
-- Easing: ease-out
+| State | Animation | Duration/Spring |
+|-------|-----------|-----------------|
+| Hover | Background/shadow change | 150ms ease-out |
+| Press | Scale to 0.95-0.98 | 50-100ms ease-out |
+| Release | Return to normal | 150ms ease-out |
+| Loading | Spinner (if needed) | Continuous |
 
-**Press**
-- Property: scale (0.95-0.98), background-color
-- Duration: 50-100ms
-- Easing: ease-out
-
-**Loading**
-- Spinner rotation: continuous, 1-1.5s per rotation
-- Pulse: 1-2s ease-in-out infinite
-
-### Modals / Dialogs
+### Modals
 
 **Open**
-```
-backdrop: opacity 0 → 1, 200ms ease-out
-modal: scale 0.95 → 1, opacity 0 → 1, 250ms ease-out
-```
+- Backdrop: opacity 0→1, 200ms ease-out
+- Modal: scale 0.95→1, opacity 0→1, 250ms ease-out
 
 **Close**
-```
-modal: opacity 1 → 0, 150ms ease-in
-backdrop: opacity 1 → 0, 200ms ease-in
-```
+- Modal: opacity 1→0, 150ms ease-in
+- Backdrop: opacity 1→0, 200ms ease-in
 
-### Dropdowns / Menus
+### Dropdowns/Menus
 
 **Open**
-```
-opacity: 0 → 1
-transform: translateY(-8px) → translateY(0)
-duration: 150-200ms
-easing: ease-out
-```
+- opacity 0→1, translateY(-8px)→0, 150-200ms ease-out
 
 **Close**
-```
-opacity: 1 → 0
-duration: 100-150ms
-easing: ease-in
-```
+- opacity 1→0, 100-150ms ease-in
 
-### Sidebars / Drawers
+### Toasts/Notifications
 
-**Slide In (from left)**
-```
-transform: translateX(-100%) → translateX(0)
-duration: 250-300ms
-easing: ease-out (or spring: stiffness 300, damping 25)
-```
-
-**Slide Out**
-```
-transform: translateX(0) → translateX(-100%)
-duration: 200-250ms
-easing: ease-in
-```
-
-### Toasts / Notifications
-
-**Enter (from right)**
-```
-transform: translateX(100%) → translateX(0)
-opacity: 0 → 1
-duration: 250ms
-easing: ease-out
-```
+**Enter**
+- Slide from edge + fade, 250ms ease-out
 
 **Exit**
-```
-opacity: 1 → 0
-transform: translateX(0) → translateX(50%)
-duration: 150ms
-easing: ease-in
-```
+- Fade + slide out, 150ms ease-in
 
-### Cards / List Items
+### Cards/List Items
 
-**Hover Lift**
-```
-transform: translateY(0) → translateY(-4px)
-box-shadow: subtle → elevated
-duration: 200ms
-easing: ease-out
-```
+**Hover lift**
+- translateY(0→-4px), shadow increase, 200ms ease-out
 
-**Expand/Collapse**
-```
-height: auto animation with overflow: hidden
-duration: 200-300ms
-easing: ease-out
-```
-
-### Skeleton Loaders
-
-**Shimmer**
-```
-background: linear-gradient moving left to right
-animation: shimmer 1.5s infinite
-```
-
-**Pulse**
-```
-opacity: 0.6 → 1 → 0.6
-duration: 1.5-2s
-easing: ease-in-out
-iteration: infinite
-```
+**Selection**
+- Background/border change, 150ms ease-out
 
 ---
 
@@ -295,54 +366,26 @@ iteration: infinite
 
 ### Stagger Pattern
 
-Delay each child element progressively:
+Delay each element progressively for a wave effect.
+
 ```
-base delay: 30-50ms per item
-max total delay: 300-500ms (cap for long lists)
+Base delay: 30-50ms per item
+Max total delay: 300-500ms (cap for long lists)
 ```
 
 **Example (5 items, 40ms stagger):**
-```
-Item 1: 0ms
-Item 2: 40ms
-Item 3: 80ms
-Item 4: 120ms
-Item 5: 160ms
-```
-
-### Cascade Direction
-
-- **Top-down**: Navigation, vertical lists
-- **Center-out**: Modals, alerts, focused content
-- **Origin-based**: Ripples, radial menus (from click point)
+- Item 1: 0ms
+- Item 2: 40ms
+- Item 3: 80ms
+- Item 4: 120ms
+- Item 5: 160ms
 
 ### Orchestration Principles
 
-1. **Lead with structure**: Container appears before content
-2. **Group related elements**: Animate together or with minimal stagger
-3. **Important last**: Key CTAs appear after supporting content
-4. **Consistent rhythm**: Maintain regular timing intervals
-
-### Page Transitions
-
-**Shared Element Transition**
-1. Clone source element
-2. Animate clone to destination position/size
-3. Fade in destination content
-4. Remove clone
-
-**Crossfade**
-```
-outgoing: opacity 1 → 0, 200ms
-incoming: opacity 0 → 1, 200ms (starts at 100ms)
-```
-
-**Slide**
-```
-outgoing: translateX(0) → translateX(-30%), opacity 1 → 0
-incoming: translateX(30%) → translateX(0), opacity 0 → 1
-duration: 300ms each, offset by 50ms
-```
+1. **Container before content**: Shell appears, then fills
+2. **Important elements last**: CTAs appear after supporting content
+3. **Group related elements**: Animate together or with minimal stagger
+4. **Maintain rhythm**: Consistent intervals feel intentional
 
 ---
 
@@ -353,7 +396,7 @@ duration: 300ms each, offset by 50ms
 **CSS**
 ```css
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
@@ -362,121 +405,62 @@ duration: 300ms each, offset by 50ms
 
 **JavaScript**
 ```js
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches;
 ```
 
-### Graceful Degradation
+### Graceful Alternatives
 
 | Full Motion | Reduced Motion Alternative |
 |-------------|---------------------------|
-| Slide in | Instant appear or fade |
-| Bounce | No bounce, direct position |
-| Parallax scroll | Static positioning |
+| Slide in | Instant appear or quick fade |
+| Bounce | Direct position, no overshoot |
+| Parallax | Static positioning |
 | Auto-play video | Paused with play button |
-| Loading spinner | Static loading indicator |
 | Complex choreography | Simple fade |
 
 ### What to Keep
 
-Even with reduced motion, maintain:
-- Color/opacity changes (fast: 100-150ms)
-- Focus indicators (immediate)
-- State changes (fast transition or instant)
-- Progress indicators (static or minimal)
+Even with reduced motion:
+- Fast opacity changes (< 150ms)
+- Color/state changes
+- Focus indicators (instant)
+- Static progress indicators
 
 ---
 
-## Platform-Specific Curves
+## Discovering the Right Animation
 
-### Apple (iOS, macOS)
+### Don't Start with Specifications
 
-**System Curves**
-```swift
-// SwiftUI
-.animation(.easeInOut)  // default
-.animation(.spring(response: 0.5, dampingFraction: 0.8))
+Animation timing should emerge from exploration, not be dictated upfront.
 
-// UIKit
-UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut)
-```
+**Sketch first:**
+1. Draw key frames on paper
+2. Act out the motion with your hands
+3. Video prototype with rough timing
+4. Adjust based on feel
 
-**Recommended Durations**
-- Navigation push: 350ms
-- Modal present: 300ms
-- Keyboard: 250ms
-- Spring response: 0.3-0.5
+### Finding the Right Duration
 
-### Material Design (Android, Web)
+1. Start with a rough guess
+2. Make it 2x faster — does it feel abrupt?
+3. Make it 2x slower — does it feel sluggish?
+4. Narrow in on the sweet spot
+5. Test with users; watch for impatience or confusion
 
-**Standard Easing**
-```
-cubic-bezier(0.4, 0, 0.2, 1)
-```
+### Finding the Right Easing
 
-**Decelerate**
-```
-cubic-bezier(0, 0, 0.2, 1)
-```
+1. Start with ease-out (almost always works)
+2. Try ease-in-out — does it feel more natural?
+3. Try spring — does it feel more physical?
+4. Match to emotional context
 
-**Accelerate**
-```
-cubic-bezier(0.4, 0, 1, 1)
-```
+### Questions for Review
 
-**Duration Tokens**
-```
-short1: 50ms   short2: 100ms  short3: 150ms  short4: 200ms
-medium1: 250ms medium2: 300ms medium3: 350ms medium4: 400ms
-long1: 450ms   long2: 500ms   long3: 550ms   long4: 600ms
-```
-
-### Windows (Fluent Design)
-
-**Standard Easing**
-```
-cubic-bezier(0.8, 0, 0.2, 1)
-```
-
-**Accelerate**
-```
-cubic-bezier(0.9, 0.1, 1, 0.2)
-```
-
-**Decelerate**
-```
-cubic-bezier(0.1, 0.9, 0.2, 1)
-```
-
-**Durations**
-- Fast: 83ms
-- Normal: 167ms
-- Slow: 250ms
-
----
-
-## Quick Reference Card
-
-### Most Common Animations
-
-| Animation | Duration | Easing |
-|-----------|----------|--------|
-| Button hover | 150ms | ease-out |
-| Button press | 100ms | ease-out |
-| Dropdown open | 200ms | ease-out |
-| Dropdown close | 150ms | ease-in |
-| Modal open | 250ms | ease-out |
-| Modal close | 200ms | ease-in |
-| Tooltip show | 150ms | ease-out |
-| Tooltip hide | 100ms | ease-in |
-| Toast enter | 250ms | ease-out |
-| Toast exit | 150ms | ease-in |
-| Page fade | 200ms | ease-in-out |
-| List stagger | 40ms/item | ease-out |
-
-### Default Spring
-
-For most interactive elements:
-```
-stiffness: 300, damping: 20
-```
-Or in React Spring: `tension: 300, friction: 20`
+- Is this animation communicating something essential?
+- Would a user performing this 100 times want this animation?
+- Does it respect users who prefer reduced motion?
+- Does the timing feel responsive, not sluggish?
+- Does the easing match the emotional context?
