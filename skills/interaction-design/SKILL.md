@@ -1,15 +1,15 @@
 ---
 name: interaction-design
-description: Apply interaction design principles to create intuitive, responsive interfaces. Use when designing component behaviors, micro-interactions, loading states, transitions, user flows, accessibility patterns, or when the user asks about UX, animation timing, keyboard navigation, or progressive disclosure.
+description: Apply interaction design principles to create intuitive, responsive interfaces. Use when designing component behaviors, micro-interactions, loading states, transitions, user flows, accessibility patterns, keyboard navigation, progressive disclosure, animation timing, direct manipulation patterns, instrument/tool design, feedback systems, touch/gesture interactions, evaluating interaction directness, analyzing modal vs modeless designs, or designing post-WIMP interfaces. Also use when reviewing UI for interaction quality or when asked about UX, responsiveness, or user control.
 ---
 
 # Interaction Design
 
 Guide for designing intuitive, responsive, and accessible user interactions.
 
-## Output Contract
+## Output Contracts
 
-For interaction specifications, structure your response as:
+### Interaction Specification
 
 ```markdown
 ## Interaction Spec: [Component Name]
@@ -44,7 +44,7 @@ For interaction specifications, structure your response as:
 - [Scenario]: [behavior]
 ```
 
-For flow/journey analysis:
+### Flow Analysis
 
 ```markdown
 ## Flow Analysis: [Journey Name]
@@ -59,173 +59,241 @@ For flow/journey analysis:
 - [State that needs design]
 ```
 
+## Decision Frameworks
+
+### Modal vs Modeless
+
+**Use modeless** (inspectors, inline editing, live preview) when:
+- User needs to see results while adjusting
+- Trial-and-error is expected
+- Multiple parameters interact visually
+- Frequent adjustments are needed
+
+**Use modal** (dialogs, overlays) only when:
+- Action is destructive/irreversible and needs confirmation
+- Complex multi-step wizard with clear sequence
+- System needs exclusive attention (auth, payments)
+- Context must be isolated (compose email, edit profile)
+
+### Activation Type Selection
+
+| Frequency | Recommend | Rationale |
+|-----------|-----------|-----------|
+| Constant (scrolling, panning) | Spatial (always visible) or dedicated input | Zero activation cost |
+| Frequent (formatting, tools) | Keyboard shortcut + toolbar | Fast access, learnable |
+| Occasional (settings, preferences) | Menu or command palette | Saves space, discoverable |
+| Rare (export, delete account) | Menu only | Prevents accidents |
+
+### Feedback Timing
+
+| Response Time | User Perception | Design Response |
+|---------------|-----------------|-----------------|
+| <100ms | Instant | Direct manipulation, no indicator needed |
+| 100ms–1s | Fast | Subtle state change (opacity, cursor) |
+| 1s–10s | Working | Spinner or progress indicator |
+| >10s | Long | Progress bar with estimate, allow cancel |
+
+## Instrument Design
+
+Every interactive element is an *instrument* mediating between user and content. Evaluate instruments on three dimensions:
+
+### Degree of Indirection
+
+Lower indirection = more direct manipulation.
+
+**Spatial offset** — Distance between control and effect:
+- Ideal: Handles directly on the object (resize handles, drag-to-reorder)
+- Good: Inspector panel alongside content
+- Poor: Toolbar at screen edge
+- Avoid: Modal dialog covering content
+
+**Temporal offset** — Delay before seeing results:
+- Ideal: Real-time as user drags/types (live preview)
+- Good: On blur, release, or short debounce
+- Poor: Requires clicking "Apply" to preview
+- Avoid: Only visible after closing dialog
+
+### Degree of Integration
+
+Ratio of input DOF to output DOF. Higher = more efficient.
+
+| Interaction | Input DOF | Output DOF | Integration | Verdict |
+|-------------|-----------|------------|-------------|---------|
+| 2D drag for position | 2 | 2 | 1.0 | Ideal |
+| Scrollbar for 2D pan | 1 | 2 | 0.5 | Use panning instead |
+| 3 sliders for HSL | 1 each | 3 | 0.33 | Consider unified picker |
+| Rotation dial | 1 | 1 | 1.0 | Ideal |
+| Text field for angle | typing | 1 | ~0.1 | Add drag or dial |
+
+### Degree of Compatibility
+
+Similarity between gesture and result. Higher = more intuitive.
+
+| Compatibility | Example |
+|---------------|---------|
+| High | Drag down → content moves down |
+| Medium | Pinch → zoom (metaphor-based) |
+| Low | Drag scrollbar down → content moves up |
+| Very low | Type "24" → font becomes 24pt |
+
+**Design goal**: Maximize compatibility, especially for frequent operations.
+
 ## Core Principles
 
 ### Feedback & Responsiveness
-- Every user action deserves acknowledgment (visual, auditory, or haptic)
-- Response time expectations: instant (<100ms), fast (<1s), or progress indication
+- Every action deserves acknowledgment (visual, auditory, or haptic)
 - Optimistic UI: update immediately, reconcile errors gracefully
 - Skeleton screens > spinners for perceived performance
+- Show system status continuously, not just on request
 
 ### Progressive Disclosure
 - Show only what's needed at each step
 - Reveal complexity gradually through interaction
 - Use sensible defaults; make advanced options discoverable
-- Reduce cognitive load by chunking information
+- Chunk information to reduce cognitive load
 
 ### Direct Manipulation
 - Objects should feel tangible and respond to interaction
 - Maintain visible connection between action and result
 - Support undo/redo for reversible actions
 - Provide clear affordances for interactive elements
+- Prefer manipulation over specification (drag vs. type coordinates)
 
-### Consistency & Standards
+### Consistency & Predictability
 - Follow platform conventions (web, iOS, Android)
 - Maintain internal consistency across the application
 - Use familiar patterns before inventing new ones
-- Ensure predictable behavior across similar components
+- Same gesture = same result throughout the app
+
+## Touch & Gesture Patterns
+
+### Target Sizes
+
+| Context | Minimum | Comfortable |
+|---------|---------|-------------|
+| iOS | 44×44pt | 48×48pt+ |
+| Android | 48×48dp | 56×56dp+ |
+| Web (touch) | 44×44px | 48×48px+ |
+| Spacing between targets | 8pt/dp | 12pt/dp |
+
+### Gesture Vocabulary
+
+| Gesture | Common Use | Considerations |
+|---------|------------|----------------|
+| Tap | Primary action | Needs visual affordance |
+| Long-press | Secondary/context menu | Needs discoverability hint (subtle animation, tooltip) |
+| Swipe | Delete, navigate, reveal actions | Always provide undo; avoid for primary destructive actions |
+| Pinch | Zoom | Maintain focal point under fingers |
+| Two-finger drag | Pan (when pinch-zoom active) | |
+| Edge swipe | System navigation | Don't override; use insets |
+
+### Touch Feedback
+- **Timing**: Highlight on touch-down, not touch-up
+- **Haptic**: Light tap for selections, medium for confirmations, heavy for warnings
+- **Visual**: Ripple for unbounded areas, state change for bounded buttons
+- **Audio**: Subtle clicks for significant actions (optional, respect system settings)
+
+## Anti-Patterns
+
+### High Temporal Offset
+❌ Modal dialog with Preview button
+✓ Inline editing with live preview
+
+❌ Settings that require app restart
+✓ Settings applied immediately with undo option
+
+### Low Compatibility
+❌ Text field for color selection
+✓ Color picker with visual feedback
+
+❌ Dropdown for numeric range
+✓ Slider with value display
+
+### Activation Cost Traps
+❌ Frequently-used tool buried in submenu
+✓ Toolbar position or keyboard shortcut
+
+❌ Tool palette requires clicking then clicking target
+✓ Click-through tools or keyboard modifiers
+
+### Modal Overuse
+❌ Confirmation dialog for every action
+✓ Undo support; confirm only for irreversible/destructive
+
+❌ Modal for simple preference
+✓ Toggle or inline control
+
+### Hidden State
+❌ Current mode only visible in status bar
+✓ Cursor change, selection handles, visible mode indicator
+
+❌ Unsaved changes with no indicator
+✓ Dirty state in title, tab, or save button
+
+### Breaking Direct Manipulation
+❌ Must click "Apply" to see font change
+✓ Font changes as user hovers/selects options
+
+❌ Separate "Edit" mode to make changes
+✓ Inline editing, click-to-edit
+
+## Platform Considerations
+
+### Web
+- Focus management crucial for SPAs (trap focus in modals, restore on close)
+- Reduced motion: respect `prefers-reduced-motion` media query
+- Design for touch + mouse: avoid hover-only interactions
+- Handle viewport resize and orientation changes
+- Support keyboard navigation for all interactive elements
+
+### iOS
+- Respect system gestures (edge swipes, scroll bounce physics)
+- Support Dynamic Type scaling (test at largest sizes)
+- Use SF Symbols for consistent, adaptable iconography
+- Haptic feedback via UIImpactFeedbackGenerator
+- Support VoiceOver with proper trait annotations
+
+### macOS
+- Support keyboard shortcuts and menu bar integration
+- Respect reduced motion and increased contrast settings
+- Multi-window: maintain state across windows
+- Support trackpad gestures (pinch, rotate, swipe)
+
+### Android
+- Material motion principles (container transform, shared axis)
+- Predictive back gesture (Android 14+): prepare back preview
+- Edge-to-edge with proper WindowInsets handling
+- Support TalkBack with contentDescription
 
 ## Micro-Interactions
 
 ### State Transitions
 - **Hover**: 150-200ms ease-out for color/shadow changes
-- **Focus**: Immediate visible indicator (outline, ring)
+- **Focus**: Immediate visible indicator (outline, ring, glow)
 - **Active/Pressed**: Scale down slightly (0.95-0.98) or darken
 - **Disabled**: Reduced opacity (0.5-0.6), cursor: not-allowed
-- **Loading**: Pulsing skeleton, spinner, or progress bar
+- **Loading**: Pulsing skeleton or spinner
 
 ### Animation Timing
 - **Micro**: 100-200ms (button states, toggles)
 - **Small**: 200-300ms (dropdowns, tooltips)
-- **Medium**: 300-400ms (modals, panels)
+- **Medium**: 300-400ms (modals, panels, cards)
 - **Large**: 400-600ms (page transitions, complex reveals)
-- Use ease-out for entering, ease-in for exiting
 
-### Easing Functions
-- `ease-out`: Elements entering view (feels welcoming)
-- `ease-in`: Elements leaving view (feels decisive)
-- `ease-in-out`: Elements moving within view
-- `spring`: Natural, playful interactions
-
-## User Flow Design
-
-### Navigation Patterns
-- Maintain user's mental model of location
-- Provide escape hatches (back, cancel, close)
-- Support both linear and non-linear navigation
-- Preserve state when navigating away and returning
-
-### Onboarding
-- Defer account creation until value is demonstrated
-- Use progressive onboarding over tutorial dumps
-- Highlight features contextually when relevant
-- Allow skipping with graceful degradation
-
-### Error Recovery
-- Prevent errors through constraints and validation
-- Inline validation at the right moment (not too eager)
-- Clear error messages: what happened, why, how to fix
-- Preserve user input during error states
-- Offer recovery actions, not just error descriptions
-
-### Empty States
-- Explain what belongs here and how to add it
-- Provide clear call-to-action
-- Use illustration/imagery to reduce starkness
-- Consider first-run vs. cleared vs. no-results states
+See [references/animation-timing.md](references/animation-timing.md) for detailed curves and spring configurations.
 
 ## Component Behaviors
 
-### Forms & Inputs
-- Label always visible (not just placeholder)
-- Validate on blur, re-validate on change after error
-- Show character counts for limited fields
-- Auto-focus first field; support tab navigation
-- Disable submit during processing; show progress
-
-### Modals & Dialogs
-- Trap focus within modal
-- Close on Escape key and backdrop click (when appropriate)
-- Return focus to trigger element on close
-- Prevent background scrolling
-- Stack modals carefully (avoid when possible)
-
-### Dropdowns & Menus
-- Open on click (not hover) for accessibility
-- Support keyboard navigation (arrows, Enter, Escape)
-- Highlight current selection
-- Position to avoid viewport edges
-- Close on outside click or Escape
-
-### Drag & Drop
-- Clear visual indication of draggable items
-- Ghost/preview during drag
-- Valid drop zones highlighted
-- Animate items into new positions
-- Provide keyboard alternative
+For detailed patterns on forms, modals, menus, drag-and-drop, and other components, see [references/component-patterns.md](references/component-patterns.md).
 
 ## Accessibility Patterns
 
-### Keyboard Navigation
-- All interactive elements focusable via Tab
-- Logical focus order matching visual layout
-- Skip links for repetitive navigation
-- Arrow keys for related controls (tabs, menus)
-- Enter/Space for activation; Escape for dismissal
-
-### Screen Readers
-- Semantic HTML as foundation
-- ARIA labels for icon-only buttons
-- Live regions for dynamic content
-- Announce loading states and completions
-- Meaningful link/button text (not "click here")
-
-### Motion & Vestibular
-- Respect `prefers-reduced-motion`
-- Provide alternatives to motion-based interactions
-- Avoid parallax and excessive animation
-- Allow pausing auto-playing content
-
-### Color & Contrast
-- Don't rely on color alone for meaning
-- Minimum 4.5:1 contrast for text
-- 3:1 for large text and UI components
-- Test with color blindness simulators
-
-## Loading & Progress
-
-### Loading States
-- Immediate feedback that action was received
-- Skeleton screens for predictable layouts
-- Spinners for unpredictable durations
-- Progress bars when duration is known
-- Stagger skeleton animations for natural feel
-
-### Optimistic Updates
-- Update UI immediately on user action
-- Sync with server in background
-- Handle conflicts gracefully
-- Rollback with clear explanation on failure
-
-### Streaming & Incremental
-- Show content as it arrives
-- Maintain scroll position during updates
-- Indicate when more content is loading
-- Handle connection interruptions
+For ARIA patterns, focus management strategies, and screen reader considerations, see [references/accessibility-patterns.md](references/accessibility-patterns.md).
 
 ## Theoretical Foundations
 
-This skill draws from foundational interaction design research:
+### Direct Manipulation (Shneiderman)
+Core principles: visibility of objects, rapid reversible actions, direct object manipulation replacing command syntax. See [references/direct-manipulation.md](references/direct-manipulation.md).
 
-### Direct Manipulation
-The principles in this skill build on Shneiderman's direct manipulation framework:
-- Visibility of objects of interest
-- Rapid, reversible, incremental actions
-- Replacement of command syntax with direct object manipulation
-
-See: [Direct Manipulation - A Step Beyond Programming Languages.md](Direct%20Manipulation%20-%20A%20Step%20Beyond%20Programming%20Languages.md)
-
-### Instrumental Interaction
-Beaudouin-Lafon's model extends direct manipulation to post-WIMP interfaces, framing interaction as mediated by "instruments" (tools) that operate on domain objects.
-
-See: [Instrumental Interaction - an interaction model for designing post WIMP user interfaces.md](Instrumental%20Interaction%20-%20an%20interaction%20model%20for%20designing%20post%20WIMP%20user%20interfaces.md)
+### Instrumental Interaction (Beaudouin-Lafon)
+Extends direct manipulation to post-WIMP interfaces. Interaction mediated by instruments (tools) operating on domain objects. Provides framework for evaluating indirection, integration, and compatibility. See [references/instrumental-interaction.md](references/instrumental-interaction.md).

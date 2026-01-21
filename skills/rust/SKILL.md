@@ -30,11 +30,11 @@ Load the relevant reference when working in that domain:
 
 | Domain | Reference | When to Use |
 |--------|-----------|-------------|
-| **Data Modeling** | [data-modeling.md](references/data-modeling.md) | Serde patterns, UniFFI boundaries, strong types, versioned schemas |
-| **File I/O** | [file-io.md](references/file-io.md) | Atomic writes, concurrency control, durable persistence, file watching |
-| **Process Integration** | [process-integration.md](references/process-integration.md) | PID verification, subprocess handling, timestamp normalization |
-| **Text & Parsing** | [text-and-parsing.md](references/text-and-parsing.md) | UTF-8 safety, path normalization, state machine parsing, anchored updates |
-| **Testing** | [testing.md](references/testing.md) | Round-trip tests, fuzz testing, golden files, Clippy lints |
+| **Data Modeling** | [references/data-modeling.md](references/data-modeling.md) | Serde patterns, UniFFI boundaries, strong types, versioned schemas |
+| **File I/O** | [references/file-io.md](references/file-io.md) | Atomic writes, concurrency control, durable persistence, file watching |
+| **Process Integration** | [references/process-integration.md](references/process-integration.md) | PID verification, subprocess handling, timestamp normalization |
+| **Text & Parsing** | [references/text-and-parsing.md](references/text-and-parsing.md) | UTF-8 safety, path normalization, state machine parsing, anchored updates |
+| **Testing** | [references/testing.md](references/testing.md) | Round-trip tests, fuzz testing, golden files, Clippy lints |
 
 ---
 
