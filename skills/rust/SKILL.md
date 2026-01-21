@@ -9,18 +9,22 @@ Patterns for building reliable Rust systems that handle file-backed data, extern
 
 ## Core Philosophy
 
-**Conservative by Default**: Inputs from files, subprocesses, and external systems are potentially untrusted. Rust code should be:
-- Conservative: Prefer false negatives over false positives
-- Deterministic: Same input → same output
-- Resilient: Never panic on user machines due to bad input
+**Conservative by Default**: Inputs from files, subprocesses, and external systems are untrusted.
 
-**Canonical Model Ownership**: If Rust is the source of truth:
-- Internal domain model: Expressive, ergonomic
-- FFI DTOs: Boring, stable, language-friendly
-- File format model: Stable, versioned, round-trippable
-- External input model: Strictly validated, never trusted
+- Prefer false negatives over false positives
+- Same input → same output (deterministic)
+- Never panic on user machines due to bad input
 
-**Safe Rust Only**: None of these patterns require `unsafe`. Use ecosystem crates (`tempfile`, `fs2`, `sysinfo`, `uniffi`, `unicode-segmentation`) for safe abstractions.
+**Canonical Model Ownership**: When Rust is the source of truth, maintain separate representations:
+
+| Layer | Purpose | Characteristics |
+|-------|---------|-----------------|
+| Internal domain | Business logic | Expressive enums, rich types |
+| FFI DTOs | Cross-language boundary | Flat, stable, `String`-heavy |
+| File format | Persistence | Versioned, round-trippable |
+| External input | Validation boundary | Strictly validated, never trusted |
+
+**Safe Rust Only**: None of these patterns require `unsafe`. Use ecosystem crates for safe abstractions.
 
 ---
 
@@ -28,67 +32,75 @@ Patterns for building reliable Rust systems that handle file-backed data, extern
 
 Load the relevant reference when working in that domain:
 
-| Domain | Reference | When to Use |
-|--------|-----------|-------------|
-| **Data Modeling** | [references/data-modeling.md](references/data-modeling.md) | Serde patterns, UniFFI boundaries, strong types, versioned schemas |
-| **File I/O** | [references/file-io.md](references/file-io.md) | Atomic writes, concurrency control, durable persistence, file watching |
-| **Process Integration** | [references/process-integration.md](references/process-integration.md) | PID verification, subprocess handling, timestamp normalization |
-| **Text & Parsing** | [references/text-and-parsing.md](references/text-and-parsing.md) | UTF-8 safety, path normalization, state machine parsing, anchored updates |
-| **Testing** | [references/testing.md](references/testing.md) | Round-trip tests, fuzz testing, golden files, Clippy lints |
+| Domain | Reference | When to Load |
+|--------|-----------|--------------|
+| **Data Modeling** | [references/data-modeling.md](references/data-modeling.md) | Serde patterns, UniFFI, strong types, versioned schemas |
+| **File I/O** | [references/file-io.md](references/file-io.md) | Atomic writes, concurrency control, file watching |
+| **Process Integration** | [references/process-integration.md](references/process-integration.md) | PID verification, subprocess handling, timestamps |
+| **Text & Parsing** | [references/text-and-parsing.md](references/text-and-parsing.md) | UTF-8 safety, path normalization, state machines |
+| **Testing** | [references/testing.md](references/testing.md) | Round-trip tests, fuzz testing, Clippy lints |
 
 ---
 
 ## Error Handling
 
-**Never Panic on Bad Input**: File I/O and JSON parsing must never panic:
-- If metadata can't be parsed → ignore that entry (don't crash, don't guess)
-- If timestamps are missing → treat conservatively
-- Use `Option` and early returns liberally
+### Library vs Application Errors
 
-**Explicit Error Types**: Define a single error type with `thiserror`:
+**Libraries** (public API): Use `thiserror` with granular error types per operation:
 
 ```rust
+// File operations have their own error type
 #[derive(thiserror::Error, Debug)]
-pub enum DataError {
-    #[error("I/O error: {0}")]
-    Io(#[from] std::io::Error),
+pub enum ReadError {
+    #[error("failed to read {path}")]
+    Io { path: PathBuf, #[source] source: std::io::Error },
 
-    #[error("Parse error: {0}")]
-    Parse(String),
+    #[error("parse error at line {line}: {message}")]
+    Parse { line: usize, message: String },
+}
 
-    #[error("Not found: {0}")]
-    NotFound(String),
+// Subprocess operations have their own error type
+#[derive(thiserror::Error, Debug)]
+pub enum SubprocessError {
+    #[error("failed to spawn process")]
+    Spawn(#[source] std::io::Error),
 
-    #[error("Subprocess failed: {0}")]
-    SubprocessFailed(String),
+    #[error("process exited with {code:?}: {stderr}")]
+    NonZeroExit { code: Option<i32>, stderr: String },
 
-    #[error("Timeout after {0}ms")]
-    Timeout(u64),
+    #[error("output not valid UTF-8")]
+    InvalidUtf8(#[source] std::str::Utf8Error),
 
-    #[error("Unsupported format: expected {expected}, found {found:?}")]
-    UnsupportedFormat { expected: String, found: Option<String> },
+    #[error("timed out after {0:?}")]
+    Timeout(std::time::Duration),
 }
 ```
 
-**Graceful Degradation**: Errors degrade functionality, not crash:
-- Capture succeeds even if validation fails
-- Data is preserved even if enrichment times out
-
----
-
-## Performance
-
-**Cache Compiled Regex**: Use `once_cell::sync::Lazy`:
+**Applications** (internal/binary): Use `anyhow` for context-rich errors:
 
 ```rust
-static HEADING_RE: Lazy<Regex> = Lazy::new(|| {
-    Regex::new(r"^### \[#item-([A-Z0-9]+)\]").unwrap()
-});
+use anyhow::{Context, Result};
+
+fn load_config(path: &Path) -> Result<Config> {
+    let content = std::fs::read_to_string(path)
+        .with_context(|| format!("failed to read config from {}", path.display()))?;
+    // ...
+}
 ```
 
-**Cache Parse Results**: Key by `(mtime, size)` or content hash to avoid re-parsing unchanged files.
+### Graceful Degradation
 
-**Deterministic Selection**: Directory iteration order is unstable. When selecting from candidates, use a deterministic tiebreaker (e.g., creation time, then path).
+Errors degrade functionality, not crash. But *log* when being lenient:
+
+```rust
+match parse_metadata(&line) {
+    Ok(meta) => entries.push(meta),
+    Err(e) => {
+        tracing::warn!("skipping malformed entry at line {}: {}", line_num, e);
+        // Continue processing other entries
+    }
+}
+```
 
 ---
 
@@ -96,29 +108,38 @@ static HEADING_RE: Lazy<Regex> = Lazy::new(|| {
 
 ### Do
 
-- Truncate strings with `chars()` or graphemes, not byte slicing
-- Anchor identification to heading lines (`^### [#item-...]`)
-- Parse metadata only within defined regions
-- Normalize keys/values early per spec
-- Cache compiled regex and parse results
+- Use `std::sync::LazyLock` for static regex (Rust 1.80+)
+- Hold locks across entire read-modify-write cycles
+- Add `#[serde(deny_unknown_fields)]` for strict external input
+- Truncate strings with `.chars()` or graphemes, not byte slicing
 - Write files atomically with `sync_all()` before rename
 - Verify PID identity with process start time
 - Use `saturating_sub` for time arithmetic
-- Use explicit error variants with `thiserror`
-- Run `cargo clippy` and `cargo fmt` before commit
+- Run `cargo clippy -- -D warnings` and `cargo fmt` before commit
 
 ### Don't
 
-- Slice strings with `&s[..N]` without checking char boundaries
-- Use `.contains()` to decide which block to update
-- Treat metadata patterns anywhere as real metadata
-- Ignore version markers if spec requires enforcement
-- Recompile regex each parse
-- Assume IDs are unique with external edits
+- Use `#[from]` without adding context (loses *which* file failed)
+- Create monolithic error enums spanning unrelated operations
+- Silently ignore errors without logging
+- Slice strings with `&s[..N]` (panics on char boundaries)
+- Assume directory iteration order is stable
 - Trust subprocess output without validation
-- Mix timestamp units without normalization
-- Panic on malformed input
 - Use `unsafe` (not needed for these patterns)
+
+---
+
+## Bugs This Guide Prevents
+
+| Bug | Pattern | Reference |
+|-----|---------|-----------|
+| PID reuse "ghost sessions" | Store + verify process start time | [process-integration.md](references/process-integration.md) |
+| Timestamp unit mismatch (sec vs ms) | Normalize on read | [process-integration.md](references/process-integration.md) |
+| UTF-8 panic on truncation | Use `.chars().take(n)` | [text-and-parsing.md](references/text-and-parsing.md) |
+| Lost updates under concurrency | Lock spans full read-modify-write | [file-io.md](references/file-io.md) |
+| Corrupt file on power loss | `sync_all()` before rename | [file-io.md](references/file-io.md) |
+| Silent metadata corruption | Anchor updates to heading lines | [text-and-parsing.md](references/text-and-parsing.md) |
+| Old data breaks new code | `#[serde(default)]` + `alias` | [data-modeling.md](references/data-modeling.md) |
 
 ---
 
@@ -127,29 +148,19 @@ static HEADING_RE: Lazy<Regex> = Lazy::new(|| {
 When modifying these systems, verify:
 
 **Schema / Serde**
-- [ ] New fields are `Option` + `#[serde(default)]`
-- [ ] Old field names supported via `alias`
-- [ ] No field meaning repurposed in-place
+- [ ] New fields use `Option` + `#[serde(default)]`
+- [ ] Old field names supported via `alias` (read) or `rename` (write)
+- [ ] External input uses `#[serde(deny_unknown_fields)]`
 
-**Paths**
-- [ ] All comparisons use shared normalizer
-- [ ] Root handled explicitly (no accidental `//`)
-- [ ] Hashing uses normalized paths
-
-**PID Safety**
-- [ ] Existence ≠ identity unless legacy mode
-- [ ] Verified entries check `proc_started`
-- [ ] Legacy mode has mitigations + age expiry
-
-**Timestamps**
-- [ ] Units consistent or normalized on read
-- [ ] Selection deterministic on ties
-- [ ] Age checks immune to unit mismatch
+**Concurrency**
+- [ ] Mutex held across entire read-modify-write cycle
+- [ ] Shared state uses `Mutex<T>`, not `thread_local!`
+- [ ] File locking documents platform caveats if used
 
 **Robustness**
 - [ ] No panics on file I/O or parse errors
-- [ ] Unreadable data ignored, not guessed
-- [ ] Performance stable under frequent refresh
+- [ ] Errors logged before being ignored
+- [ ] Subprocesses have timeouts
 
 **Quality**
 - [ ] `cargo clippy -- -D warnings` passes
