@@ -22,6 +22,48 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/tuning-panel"]
+    },
+    {
+      "name": "unix-macos-engineer",
+      "description": "Expert Unix and macOS systems engineer for shell scripting, system administration, command-line tools, launchd, Homebrew, networking, and low-level system tasks",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/unix-macos-engineer"]
+    },
+    {
+      "name": "model-first-reasoning",
+      "description": "Apply Model-First Reasoning (MFR) to code generation tasks with formal modeling before implementation",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/model-first-reasoning"]
+    },
+    {
+      "name": "macos-app-design",
+      "description": "Design and build native macOS applications with SwiftUI or AppKit following Apple's design guidelines and Liquid Glass design system",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/macos-app-design"]
+    },
+    {
+      "name": "interaction-design",
+      "description": "Apply interaction design principles for intuitive, responsive interfaces including micro-interactions, loading states, transitions, and accessibility patterns",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/interaction-design"]
+    },
+    {
+      "name": "capture-learning",
+      "description": "Capture learnings from sessions to project knowledge files or skills for cross-project reuse",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/capture-learning"]
+    },
+    {
+      "name": "typography",
+      "description": "Apply professional typography principles for readable, hierarchical, and aesthetically refined interfaces",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/typography"]
     }
   ]
 }
