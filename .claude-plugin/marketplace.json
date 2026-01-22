@@ -71,6 +71,13 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/autonomous-agent-readiness"]
+    },
+    {
+      "name": "agentic-docs",
+      "description": "Write clear, plain-spoken code comments and documentation optimized for both human readers and AI coding assistants",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/agentic-docs"]
     }
   ]
 }
