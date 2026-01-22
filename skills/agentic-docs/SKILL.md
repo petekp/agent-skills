@@ -1,6 +1,6 @@
 ---
 name: agentic-docs
-description: Write clear, plain-spoken code comments and documentation that lives alongside the code. Use when writing or reviewing code that needs inline documentation—file headers, function docs, architectural decisions, or explanatory comments. Optimized for both human readers and AI coding assistants who benefit from co-located context.
+description: Write clear, plain-spoken code comments and documentation that lives alongside the code. Use when writing or reviewing code that needs inline documentation like file headers, function docs, architectural decisions, or explanatory comments. Works well for both human readers and AI coding assistants who see one file at a time.
 ---
 
 # Agentic Docs
@@ -49,7 +49,7 @@ Every file should open with a brief explanation of its purpose and how it fits i
 **Include:**
 - What this file/module is responsible for
 - Why it exists (if not obvious from the name)
-- Key relationships to other parts of the codebase
+- Relationships to other parts of the codebase
 - Any non-obvious design decisions
 
 ### Function & Method Documentation
@@ -64,7 +64,7 @@ Document the contract, not the implementation.
  * regional rates, over 5lb triggers freight calculation.
  *
  * Returns $0 for destinations we don't ship to rather than
- * throwing—caller should check `canShipTo()` first if they
+ * throwing. Caller should check `canShipTo()` first if they
  * need to distinguish "free shipping" from "can't ship."
  */
 function calculateShipping(weightLbs: number, zipCode: string): number
@@ -105,7 +105,7 @@ const debouncedSearch = useMemo(
 ```
 
 ```swift
-// Force unwrap is safe here—viewDidLoad guarantees the storyboard
+// Force unwrap is safe here: viewDidLoad guarantees the storyboard
 // connected this outlet. If it's nil, we want to crash immediately
 // rather than fail silently later.
 let tableView = tableView!
@@ -140,7 +140,7 @@ For code that embodies important design decisions, explain the tradeoffs.
 //
 // Navigation logic lives here instead of in view controllers because:
 // 1. VCs don't need to know about each other (loose coupling)
-// 2. Deep linking becomes straightforward—just call coordinator methods
+// 2. Deep linking becomes straightforward; just call coordinator methods
 // 3. Navigation is testable without instantiating UI
 //
 // The tradeoff is more files and indirection. Worth it for apps with
@@ -182,7 +182,7 @@ See [references/language-examples.md](references/language-examples.md) for detai
 
 **Date things that expire.** Workarounds, version-specific code, and temporary solutions should note when they can be removed.
 
-**Reference constants, don't duplicate values.** When a behavior is controlled by a constant, reference it by name—don't restate its value in the comment.
+**Reference constants, don't duplicate values.** When a behavior is controlled by a constant, reference it by name. Don't restate its value in the comment.
 
 ```rust
 // Bad: duplicates the value, will drift when constant changes
