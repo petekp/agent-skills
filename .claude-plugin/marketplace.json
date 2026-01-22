@@ -64,6 +64,13 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/typography"]
+    },
+    {
+      "name": "autonomous-agent-readiness",
+      "description": "Assess a codebase's readiness for autonomous agent development and provide tailored recommendations",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/autonomous-agent-readiness"]
     }
   ]
 }
