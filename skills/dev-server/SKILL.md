@@ -1,6 +1,6 @@
 ---
 name: dev-server
-description: Start development servers with intelligent port management. Use when asked to "start the dev server", "run dev", "start development", "launch the server", or any request to run a local development server. Handles port conflicts, detects project type, cleans up stale processes, and opens the browser automatically.
+description: Start development servers with intelligent port management. Use when asked to "start the dev server", "run dev", "start development", "launch the server", "spin up the app", "get this running", "boot the frontend", or any request to run a local development server. Handles port conflicts, detects project type, cleans up stale processes, and opens the browser automatically.
 license: MIT
 metadata:
   author: petekp
@@ -9,83 +9,45 @@ metadata:
 
 # Dev Server
 
-Start development servers with port conflict resolution, process cleanup, and automatic browser opening.
-
 ## Workflow
 
-1. **Scan ports** using `scripts/check_ports.sh --scan`
-2. **If ports are in use**, show the user which processes are running and ask if they want to kill them
-3. **Kill stale processes** if requested using `scripts/check_ports.sh --kill <port>`
-4. **Detect project type** by checking for package.json, then determine package manager
-5. **Start the dev server** with the `--open` flag to auto-open browser
+1. **Check ports** - Run `scripts/check_ports.sh` to scan common dev ports
+2. **Resolve conflicts**:
+   - **Same project**: Use `--kill-if-same` to kill without asking
+   - **Different project**: Ask user before killing or use alternate port
+3. **Detect environment** - Check for docker-compose.yml, monorepo structure, or package.json
+4. **Start server** - Use detected package manager with `--open` flag; add `--port <n>` if needed
 
-## Port Checking Script
-
-```bash
-# Scan common dev ports (3000, 3001, 5173, 8080, etc.)
-./scripts/check_ports.sh --scan
-
-# Check specific port
-./scripts/check_ports.sh 3000
-
-# Find first available port starting from 3000
-./scripts/check_ports.sh --find 3000
-
-# Kill processes on a port
-./scripts/check_ports.sh --kill 3000
-
-# List running node/dev processes
-./scripts/check_ports.sh --list
-```
-
-## Detecting Project Type and Package Manager
-
-Check in order:
-1. `bun.lockb` → use `bun run dev`
-2. `pnpm-lock.yaml` → use `pnpm dev`
-3. `yarn.lock` → use `yarn dev`
-4. `package-lock.json` or `package.json` → use `npm run dev`
-
-For Next.js/Vite/etc., the `dev` script in package.json handles the specifics.
-
-## Starting with Custom Port
-
-If the default port is unavailable, use the `--port` flag:
+## Port Script
 
 ```bash
-npm run dev -- --port 3001
-pnpm dev --port 3001
-yarn dev --port 3001
-bun run dev --port 3001
+scripts/check_ports.sh                   # Scan ports, show which project each belongs to
+scripts/check_ports.sh 3000              # Check specific port with project info
+scripts/check_ports.sh --find 3000       # Find first available port
+scripts/check_ports.sh --kill-if-same 3000   # Kill only if same project (safe)
+scripts/check_ports.sh --kill 3000       # Force kill (ask user first if different project)
 ```
 
-## Opening Browser Automatically
+The script detects project ownership by comparing the process's working directory to the current directory. "Same project" means the process was started from this directory or a parent/child of it.
 
-Always include the `--open` flag when starting the dev server. Most frameworks support this natively:
+## Environment Detection
 
-```bash
-npm run dev -- --open
-pnpm dev --open
-yarn dev --open
-bun run dev --open
-```
+**Docker projects**: If `docker-compose.yml` exists with a web/app service, suggest `docker compose up` instead.
 
-For frameworks without `--open` support, open the browser manually after the server starts:
+**Monorepos**: Check if current directory has package.json with `dev` script. If not, look for:
+- `apps/web/package.json` or `packages/app/package.json` (Turborepo/Nx pattern)
+- Root package.json with workspace `dev` script that delegates
 
-```bash
-open http://localhost:3000  # macOS
-```
+**Package manager**: Detect from lockfile (bun.lockb → bun, pnpm-lock.yaml → pnpm, yarn.lock → yarn, otherwise npm).
 
-**Combined example** (custom port + auto-open):
-```bash
-npm run dev -- --port 3001 --open
-```
+## Framework Notes
 
-## Quick Reference
+Most frameworks support `--open` and `--port` flags. Exceptions:
 
-| Situation | Action |
-|-----------|--------|
-| Port 3000 in use | Kill process or use `--port 3001` |
-| Multiple node processes | Run `--list` to identify, kill stale ones |
-| Unknown project type | Check package.json scripts for dev command |
-| Open browser | Use `--open` flag or `open http://localhost:PORT` |
+| Framework | Default Port | Notes |
+|-----------|--------------|-------|
+| Create React App | 3000 | Uses `PORT=3001` env var instead of `--port` |
+| Gatsby | 8000 | Uses `-p` instead of `--port` |
+| Remix | 3000 | `--port` works in dev mode |
+
+When `--open` doesn't work, fall back to `open http://localhost:PORT` after server starts.
