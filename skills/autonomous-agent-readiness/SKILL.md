@@ -47,9 +47,12 @@ Score the project (0-3) on each dimension. See `references/assessment-criteria.m
 | Session Independence | Remote execution capability, no user session dependencies |
 | Outcome-Oriented Design | Clear acceptance criteria, minimal procedural coupling |
 | Direct Interfaces | CLI-first tools, OS primitives, minimal abstraction layers |
+| Minimal Framework Overhead | Simple interfaces, no heavy orchestration, composable CLI tools |
 | Explicit State | Workspace directories, file-based artifacts, inspectable logs |
 | Benchmarking | Measurable quality criteria, automated verification |
 | Cost Awareness | Resource limits, usage tracking, explicit provisioning |
+| Verifiable Output | Automated validation, deterministic results, clear exit codes |
+| Infrastructure-Bounded Permissions | System-enforced constraints, least-privilege, no runtime prompts |
 
 ### Phase 3: Generate Recommendations
 
@@ -78,7 +81,7 @@ Tailor recommendations to the project's:
 
 [1-2 paragraphs summarizing overall readiness and top priorities]
 
-**Overall Readiness Score: X/27** (sum of dimension scores)
+**Overall Readiness Score: X/36** (sum of dimension scores)
 
 ## Dimension Scores
 
@@ -149,5 +152,14 @@ Writable workspace directory for intermediate results, logs, partial outputs, pl
 ### Benchmarks Early
 Introduce benchmarks as early as possible. Representative and repeatable metrics for quality. Even crude benchmarks beat none.
 
+### Minimal Framework Overhead
+Most real-world agent workflows reduce to running commands, reading/writing files, and making network calls. CLI-first systems are easier to reason about, debug, and more capable than they look. When an abstraction layer is more complex than the task, it becomes the bottleneck.
+
 ### Plan for Cost
 Provision token usage, allocate compute explicitly, enforce limits by system. Autonomy shifts where costs appear, doesn't remove them.
+
+### Verifiable Output
+Output must be verifiable without human review. Automated validation, deterministic results, clear success/failure exit codes. If quality cannot be measured, it cannot be trusted in autonomous operation.
+
+### Infrastructure-Bounded Permissions
+Permissions are constrained by the environment, not by prompts or runtime decisions. Explicit capability grants, sandbox restrictions on dangerous operations, least-privilege by default. No runtime permission prompts required.

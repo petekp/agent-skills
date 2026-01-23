@@ -311,7 +311,52 @@ Acceptance: Unit test for new parameter exists and passes
 
 ---
 
-## 7. Explicit State
+## 7. Minimal Framework Overhead
+
+**What it means:** Most agent workflows reduce to running commands, reading/writing files, and making network calls. When abstraction is more complex than the task, it becomes the bottleneck.
+
+### Score 0
+- Heavy agent frameworks required for basic operations
+- Complex orchestration layers
+- Custom protocols for everything
+- Cannot run operations without framework
+
+### Score 1
+- Some framework overhead present
+- Basic operations possible without framework
+- Orchestration used inconsistently
+- Mix of simple and complex patterns
+
+### Score 2
+- Most operations work without orchestration
+- Framework optional, not required
+- CLI alternatives available
+- Some unnecessary abstraction remains
+
+### Score 3
+- Operations reduce to shell commands
+- No orchestration framework required
+- CLI-first design throughout
+- Composable, pipeable commands
+- OS primitives preferred over abstractions
+
+### What to look for
+- `bin/` scripts that work standalone
+- Makefile with simple targets
+- No heavy MCP dependencies for basic tasks
+- Shell-scriptable operations
+- Direct HTTP instead of custom RPC
+
+### Anti-patterns
+- Framework more complex than the task
+- Custom agent protocols
+- Required orchestration for simple operations
+- Plugin systems for basic functionality
+- Coordination layers that add no value
+
+---
+
+## 8. Explicit State
 
 **What it means:** Writable workspace directory for intermediate results, logs, partial outputs, planning artifacts.
 
@@ -365,7 +410,7 @@ workspace/
 
 ---
 
-## 8. Benchmarking
+## 9. Benchmarking
 
 **What it means:** Measurable quality criteria, automated verification. Benchmarks exist early, not as a finishing step.
 
@@ -409,7 +454,7 @@ workspace/
 
 ---
 
-## 9. Cost Awareness
+## 10. Cost Awareness
 
 **What it means:** Token usage provisioned, compute allocated explicitly, limits enforced by system.
 
@@ -474,6 +519,111 @@ resources:
 
 ---
 
+## 11. Verifiable Output
+
+**What it means:** Output must be verifiable without human review. Automated validation, deterministic results, clear success/failure signals.
+
+### Score 0
+- Output requires human judgment
+- No automated validation
+- Ambiguous completion states
+- Results not inspectable
+
+### Score 1
+- Basic pass/fail signals
+- Some automated checks
+- Output mostly verifiable
+- Manual verification still common
+
+### Score 2
+- Most output automatically validated
+- Clear exit codes
+- Deterministic for most cases
+- Validation pipeline exists
+
+### Score 3
+- All output automatically verifiable
+- Deterministic results
+- Clear success/failure exit codes
+- Validation integrated into workflow
+- No human review required for correctness
+
+### What to look for
+- Exit code conventions
+- Output validation scripts
+- Assertion-based tests
+- Result integrity checks
+- Automated acceptance testing
+
+### Verification patterns
+- Schema validation for structured output
+- Checksum/hash verification for files
+- Integration tests as acceptance criteria
+- Regression test suites
+- Golden file comparisons
+
+---
+
+## 12. Infrastructure-Bounded Permissions
+
+**What it means:** Permissions are constrained by the environment, not by prompts or runtime decisions. System-enforced limits, least-privilege defaults.
+
+### Score 0
+- All-or-nothing permissions
+- Runtime permission prompts
+- Agent self-manages permissions
+- No infrastructure constraints
+
+### Score 1
+- Some permission scoping
+- Mix of runtime and infrastructure controls
+- Basic capability restrictions
+- Inconsistent enforcement
+
+### Score 2
+- Most permissions infrastructure-defined
+- Capability grants explicit
+- Sandbox restrictions in place
+- Some runtime decisions remain
+
+### Score 3
+- All permissions defined at infrastructure level
+- Explicit capability grants only
+- Sandbox restricts dangerous operations
+- No runtime permission decisions
+- Least-privilege by default
+- Permissions auditable
+
+### What to look for
+- IAM/RBAC configurations
+- Container security policies
+- Filesystem permission restrictions
+- Network access controls
+- API key scoping
+
+### Permission patterns
+
+**Good (infrastructure-bounded):**
+```yaml
+# Sandbox policy
+capabilities:
+  allow:
+    - read_files: ["./workspace/**"]
+    - write_files: ["./workspace/**"]
+    - network: ["api.example.com:443"]
+  deny:
+    - execute_arbitrary
+    - access_secrets
+```
+
+**Bad (runtime decisions):**
+```
+Agent: "Should I access the production database?"
+Human: "Yes, go ahead"
+```
+
+---
+
 ## Stack-Specific Indicators
 
 ### Node.js/TypeScript
@@ -514,6 +664,9 @@ Run through these questions for a rapid assessment:
 4. Can I start a task and disconnect without losing progress? (Session)
 5. Are tasks defined by what to achieve, not how to achieve it? (Outcomes)
 6. Can I do everything from the command line? (Interfaces)
-7. Are intermediate results saved to files I can inspect? (State)
-8. Is there a way to measure if output quality improved? (Benchmarks)
-9. Are there resource limits configured? (Cost)
+7. Do operations work without heavy frameworks or orchestration? (Framework)
+8. Are intermediate results saved to files I can inspect? (State)
+9. Is there a way to measure if output quality improved? (Benchmarks)
+10. Are there resource limits configured? (Cost)
+11. Can output correctness be checked automatically? (Verification)
+12. Are permissions enforced by infrastructure, not prompts? (Permissions)
