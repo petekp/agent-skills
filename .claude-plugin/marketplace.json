@@ -59,6 +59,13 @@
       "skills": ["./skills/capture-learning"]
     },
     {
+      "name": "dev-server",
+      "description": "Start development servers with intelligent port management, conflict resolution, and automatic browser opening",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/dev-server"]
+    },
+    {
       "name": "typography",
       "description": "Apply professional typography principles for readable, hierarchical, and aesthetically refined interfaces",
       "source": "./",
