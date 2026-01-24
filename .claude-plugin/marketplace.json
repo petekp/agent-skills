@@ -85,6 +85,13 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/agentic-docs"]
+    },
+    {
+      "name": "manual-testing",
+      "description": "Guide users step-by-step through manually testing current work with selectable outcome options",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/manual-testing"]
     }
   ]
 }
