@@ -92,6 +92,13 @@
       "source": "./",
       "strict": false,
       "skills": ["./skills/manual-testing"]
+    },
+    {
+      "name": "agent-changelog",
+      "description": "Compile agent-optimized changelog by cross-referencing git history with plans and documentation to identify key decisions and stale information",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/agent-changelog"]
     }
   ]
 }
