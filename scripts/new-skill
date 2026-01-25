@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Auto-discover paths relative to this script's location
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+SKILLS_DIR="$REPO_ROOT/skills"
+MARKETPLACE_JSON="$REPO_ROOT/.claude-plugin/marketplace.json"
+
+# Find init_skill.py - check common locations or use override
+find_init_script() {
+    if [[ -n "${INIT_SCRIPT:-}" ]]; then
+        echo "$INIT_SCRIPT"
+        return
+    fi
+
+    local locations=(
+        "$HOME/.claude/plugins/local/skill-creator/skills/skill-creator/scripts/init_skill.py"
+        "$HOME/.claude/plugins/cache/every-marketplace/compound-engineering/"*/skills/skill-creator/scripts/init_skill.py
+        "$HOME/.claude/plugins/marketplaces/every-marketplace/plugins/compound-engineering/skills/skill-creator/scripts/init_skill.py"
+        "$HOME/.claude/plugins/marketplaces/anthropic-agent-skills/skills/skill-creator/scripts/init_skill.py"
+    )
+
+    for loc in "${locations[@]}"; do
+        # Handle glob expansion
+        for expanded in $loc; do
+            if [[ -f "$expanded" ]]; then
+                echo "$expanded"
+                return
+            fi
+        done
+    done
+
+    return 1
+}
+
+usage() {
+    cat <<EOF
+Usage: newskill <skill-name>
+
+Creates a skill in this repo's skills/ directory.
+Registers in marketplace.json if present and jq is installed.
+
+Repo: $REPO_ROOT
+
+Environment variables:
+  INIT_SCRIPT  Path to init_skill.py (auto-detected if not set)
+  EDITOR       Editor to open SKILL.md (optional)
+
+Examples:
+  newskill code-review
+  newskill api-builder
+EOF
+    exit 0
+}
+
+if [[ $# -lt 1 ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] || [[ "$1" == "help" ]]; then
+    usage
+fi
+
+SKILL_NAME="$1"
+
+if [[ ! "$SKILL_NAME" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+    echo "Invalid skill name. Use lowercase-with-hyphens."
+    exit 1
+fi
+
+if [[ -d "$SKILLS_DIR/$SKILL_NAME" ]]; then
+    echo "Skill already exists: $SKILL_NAME"
+    exit 1
+fi
+
+INIT_SCRIPT="$(find_init_script)" || {
+    echo "Could not find init_skill.py"
+    echo "Set INIT_SCRIPT env var to its location"
+    exit 1
+}
+
+printf "Description (one line): "
+read -r DESCRIPTION
+DESCRIPTION="${DESCRIPTION:-TODO: Add description}"
+
+if ! python3 "$INIT_SCRIPT" "$SKILL_NAME" --path "$SKILLS_DIR" > /dev/null 2>&1; then
+    echo "Failed to create skill directory"
+    exit 1
+fi
+
+SKILL_MD="$SKILLS_DIR/$SKILL_NAME/SKILL.md"
+REGISTERED=""
+
+if [[ -f "$MARKETPLACE_JSON" ]] && command -v jq &> /dev/null; then
+    jq --arg name "$SKILL_NAME" \
+       --arg desc "$DESCRIPTION" \
+       '.plugins += [{
+         "name": $name,
+         "description": $desc,
+         "source": "./",
+         "strict": false,
+         "skills": ["./skills/" + $name]
+       }]' "$MARKETPLACE_JSON" > "$MARKETPLACE_JSON.tmp" && mv "$MARKETPLACE_JSON.tmp" "$MARKETPLACE_JSON"
+    REGISTERED=" (registered)"
+fi
+
+echo ""
+echo "Created: $SKILL_NAME$REGISTERED"
+echo "  $SKILL_MD"
+
+if [[ -n "${EDITOR:-}" ]]; then
+    printf "\nOpen in $EDITOR? [Y/n] "
+    read -r -n 1 REPLY
+    echo
+    if [[ ! "$REPLY" =~ ^[Nn]$ ]]; then
+        "$EDITOR" "$SKILL_MD"
+    fi
+fi

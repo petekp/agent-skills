@@ -14,91 +14,126 @@
       "description": "Robust Rust patterns for file-backed data, parsing, persistence, FFI boundaries, and system integration",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/rust"]
+      "skills": [
+        "./skills/rust"
+      ]
     },
     {
       "name": "tuning-panel",
       "description": "Create bespoke parameter tuning panels for iterating on animations, layouts, colors, typography, physics, or any visual parameters",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/tuning-panel"]
+      "skills": [
+        "./skills/tuning-panel"
+      ]
     },
     {
       "name": "unix-macos-engineer",
       "description": "Expert Unix and macOS systems engineer for shell scripting, system administration, command-line tools, launchd, Homebrew, networking, and low-level system tasks",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/unix-macos-engineer"]
+      "skills": [
+        "./skills/unix-macos-engineer"
+      ]
     },
     {
       "name": "model-first-reasoning",
       "description": "Apply Model-First Reasoning (MFR) to code generation tasks with formal modeling before implementation",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/model-first-reasoning"]
+      "skills": [
+        "./skills/model-first-reasoning"
+      ]
     },
     {
       "name": "macos-app-design",
       "description": "Design and build native macOS applications with SwiftUI or AppKit following Apple's design guidelines and Liquid Glass design system",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/macos-app-design"]
+      "skills": [
+        "./skills/macos-app-design"
+      ]
     },
     {
       "name": "interaction-design",
       "description": "Apply interaction design principles for intuitive, responsive interfaces including micro-interactions, loading states, transitions, and accessibility patterns",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/interaction-design"]
+      "skills": [
+        "./skills/interaction-design"
+      ]
     },
     {
       "name": "capture-learning",
       "description": "Capture learnings from sessions to project knowledge files or skills for cross-project reuse",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/capture-learning"]
+      "skills": [
+        "./skills/capture-learning"
+      ]
     },
     {
       "name": "dev-server",
       "description": "Start development servers with intelligent port management, conflict resolution, and automatic browser opening",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/dev-server"]
+      "skills": [
+        "./skills/dev-server"
+      ]
     },
     {
       "name": "typography",
       "description": "Apply professional typography principles for readable, hierarchical, and aesthetically refined interfaces",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/typography"]
+      "skills": [
+        "./skills/typography"
+      ]
     },
     {
       "name": "autonomous-agent-readiness",
       "description": "Assess a codebase's readiness for autonomous agent development and provide tailored recommendations",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/autonomous-agent-readiness"]
+      "skills": [
+        "./skills/autonomous-agent-readiness"
+      ]
     },
     {
       "name": "agentic-docs",
       "description": "Write clear, plain-spoken code comments and documentation optimized for both human readers and AI coding assistants",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/agentic-docs"]
+      "skills": [
+        "./skills/agentic-docs"
+      ]
     },
     {
       "name": "manual-testing",
       "description": "Guide users step-by-step through manually testing current work with selectable outcome options",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/manual-testing"]
+      "skills": [
+        "./skills/manual-testing"
+      ]
     },
     {
       "name": "agent-changelog",
       "description": "Compile agent-optimized changelog by cross-referencing git history with plans and documentation to identify key decisions and stale information",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/agent-changelog"]
+      "skills": [
+        "./skills/agent-changelog"
+      ]
+    },
+    {
+      "name": "explainer",
+      "description": "writing (and",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/explainer"
+      ]
     }
   ]
 }
