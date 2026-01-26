@@ -12,63 +12,70 @@
 #   - npx (for installing skill-creator if needed)
 #
 # INSTALLATION:
-#   1. Download this script:
-#      curl -o ~/.local/bin/newskill https://gist.githubusercontent.com/YOUR_GIST_URL/raw/newskill.sh
-#      chmod +x ~/.local/bin/newskill
-#
-#   2. Or clone and alias:
-#      alias newskill="/path/to/newskill.sh"
-#
-# CONFIGURATION:
-#   Set SKILLS_DIR to your skills output directory:
-#      export SKILLS_DIR="$HOME/.claude/skills"
-#
-#   Optionally set MARKETPLACE_JSON for auto-registration:
-#      export MARKETPLACE_JSON="/path/to/.claude-plugin/marketplace.json"
+#   curl -o ~/.local/bin/newskill https://gist.githubusercontent.com/petekp/4f0ae7d252b136fc67602bcdd62e1683/raw/newskill.sh
+#   chmod +x ~/.local/bin/newskill
 #
 # USAGE:
-#   newskill                    # prompts for name and description
-#   newskill my-skill           # prompts for description only
+#   newskill                    # prompts for everything interactively
+#   newskill my-skill           # prompts for description and location
+#   newskill --global my-skill  # skip location prompt, use global
+#   newskill --local my-skill   # skip location prompt, use project
 #   newskill --help
 #
-# EXAMPLES:
-#   $ newskill
-#   Skill name (lowercase-with-hyphens): code-review
-#   Description (one line): Review code for best practices and security issues
-#
-#   Skill: code-review
-#   Description: Review code for best practices and security issues
-#   Output: /Users/you/.claude/skills/code-review/
-#
-#   Launch Claude Code to create this skill? [Y/n] y
-#
-#   Launching Claude Code...
-#   # Claude asks clarifying questions, then generates the skill
+# ENVIRONMENT VARIABLES (for scripted usage):
+#   SKILLS_DIR        Override output directory (skips location prompt)
+#   MARKETPLACE_JSON  Path to marketplace.json for auto-registration
 #
 set -euo pipefail
 
-# Configuration - override with environment variables
-SKILLS_DIR="${SKILLS_DIR:-$HOME/.claude/skills}"
+# Configuration
+GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
 MARKETPLACE_JSON="${MARKETPLACE_JSON:-}"
+FORCE_GLOBAL=false
+FORCE_LOCAL=false
 
 usage() {
     cat <<EOF
-Usage: newskill [skill-name]
+Usage: newskill [options] [skill-name]
 
 Creates a skill using Claude Code's /skill-creator skill.
 
 Options:
-  -h, --help    Show this help message
+  -g, --global    Install to global skills (~/.claude/skills)
+  -l, --local     Install to project skills (./skills or ./.claude/skills)
+  -h, --help      Show this help message
 
 Environment variables:
-  SKILLS_DIR        Output directory for skills (default: ~/.claude/skills)
-  MARKETPLACE_JSON  Path to marketplace.json for auto-registration (optional)
+  SKILLS_DIR        Override output directory (skips location prompt)
+  MARKETPLACE_JSON  Path to marketplace.json for auto-registration
 
 Examples:
-  newskill                 # prompts for name and description
-  newskill code-review     # prompts for description only
+  newskill                      # prompts for name, description, and location
+  newskill code-review          # prompts for description and location
+  newskill --global code-review # install globally, prompts for description
+  newskill --local code-review  # install to project, prompts for description
 EOF
     exit 0
+}
+
+detect_project_skills_dir() {
+    # Check for common project skill directories
+    if [[ -d "./skills" ]]; then
+        echo "./skills"
+    elif [[ -d "./.claude/skills" ]]; then
+        echo "./.claude/skills"
+    else
+        echo ""
+    fi
+}
+
+detect_marketplace_json() {
+    # Check for marketplace.json in common locations
+    if [[ -f "./.claude-plugin/marketplace.json" ]]; then
+        echo "./.claude-plugin/marketplace.json"
+    else
+        echo ""
+    fi
 }
 
 cleanup_backup() {
@@ -144,8 +151,35 @@ install_skill_creator() {
     echo ""
 }
 
-if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "help" ]]; then
-    usage
+# Parse arguments
+SKILL_NAME=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help|help)
+            usage
+            ;;
+        -g|--global)
+            FORCE_GLOBAL=true
+            shift
+            ;;
+        -l|--local)
+            FORCE_LOCAL=true
+            shift
+            ;;
+        -*)
+            echo "Unknown option: $1"
+            usage
+            ;;
+        *)
+            SKILL_NAME="$1"
+            shift
+            ;;
+    esac
+done
+
+if [[ "$FORCE_GLOBAL" == true ]] && [[ "$FORCE_LOCAL" == true ]]; then
+    echo "Error: Cannot use both --global and --local"
+    exit 1
 fi
 
 # Check for claude CLI
@@ -160,13 +194,8 @@ if ! check_skill_creator; then
     install_skill_creator
 fi
 
-# Ensure skills directory exists
-mkdir -p "$SKILLS_DIR"
-
-# Get skill name - from arg or prompt
-if [[ $# -ge 1 ]]; then
-    SKILL_NAME="$1"
-else
+# Get skill name if not provided
+if [[ -z "$SKILL_NAME" ]]; then
     printf "Skill name (lowercase-with-hyphens): "
     read -r SKILL_NAME
 fi
@@ -175,6 +204,60 @@ if [[ -z "$SKILL_NAME" ]] || [[ ! "$SKILL_NAME" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; 
     echo "Invalid skill name. Use lowercase-with-hyphens."
     exit 1
 fi
+
+# Determine skills directory
+if [[ -n "${SKILLS_DIR:-}" ]]; then
+    # Environment variable set - use it directly (for scripted usage)
+    CHOSEN_SKILLS_DIR="$SKILLS_DIR"
+elif [[ "$FORCE_GLOBAL" == true ]]; then
+    CHOSEN_SKILLS_DIR="$GLOBAL_SKILLS_DIR"
+elif [[ "$FORCE_LOCAL" == true ]]; then
+    PROJECT_DIR=$(detect_project_skills_dir)
+    if [[ -n "$PROJECT_DIR" ]]; then
+        CHOSEN_SKILLS_DIR="$PROJECT_DIR"
+    else
+        # Create default project skills directory
+        CHOSEN_SKILLS_DIR="./skills"
+    fi
+else
+    # Interactive: ask user where to install
+    PROJECT_DIR=$(detect_project_skills_dir)
+    echo ""
+    echo "Where do you want to install this skill?"
+    echo ""
+    echo "  1) Global (~/.claude/skills)"
+    echo "     Available in all projects via Claude Code"
+    if [[ -n "$PROJECT_DIR" ]]; then
+        echo "  2) This project ($PROJECT_DIR)"
+        echo "     Only available in this project"
+    else
+        echo "  2) This project (./skills - will be created)"
+        echo "     Only available in this project"
+    fi
+    echo ""
+    printf "Choice [1/2]: "
+    read -r -n 1 LOCATION_CHOICE
+    echo
+
+    case "$LOCATION_CHOICE" in
+        2)
+            if [[ -n "$PROJECT_DIR" ]]; then
+                CHOSEN_SKILLS_DIR="$PROJECT_DIR"
+            else
+                CHOSEN_SKILLS_DIR="./skills"
+            fi
+            ;;
+        *)
+            CHOSEN_SKILLS_DIR="$GLOBAL_SKILLS_DIR"
+            ;;
+    esac
+fi
+
+# Ensure skills directory exists
+mkdir -p "$CHOSEN_SKILLS_DIR"
+
+# Convert to absolute path for clarity in output
+SKILLS_DIR="$(cd "$CHOSEN_SKILLS_DIR" && pwd)"
 
 SKILL_DIR="$SKILLS_DIR/$SKILL_NAME"
 BACKUP_DIR="$SKILLS_DIR/.${SKILL_NAME}.bak"
@@ -198,6 +281,10 @@ DESCRIPTION="${DESCRIPTION:-A skill that does X}"
 
 # Ask about marketplace registration if available
 REGISTER_MARKETPLACE=false
+# Auto-detect marketplace.json if not set via env var
+if [[ -z "$MARKETPLACE_JSON" ]]; then
+    MARKETPLACE_JSON=$(detect_marketplace_json)
+fi
 if [[ -n "$MARKETPLACE_JSON" ]] && [[ -f "$MARKETPLACE_JSON" ]] && command -v jq &> /dev/null; then
     printf "Register in marketplace.json? [Y/n] "
     read -r -n 1 REPLY
@@ -210,7 +297,11 @@ fi
 echo ""
 echo "Skill: $SKILL_NAME"
 echo "Description: $DESCRIPTION"
-echo "Output: $SKILL_DIR/"
+if [[ "$SKILLS_DIR" == "$GLOBAL_SKILLS_DIR" ]]; then
+    echo "Install: Global ($SKILL_DIR/)"
+else
+    echo "Install: Project ($SKILL_DIR/)"
+fi
 if [[ "$REPLACING" == true ]]; then
     echo "Mode: Replace existing"
 fi
