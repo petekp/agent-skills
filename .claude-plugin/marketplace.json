@@ -125,15 +125,6 @@
       "skills": [
         "./skills/agent-changelog"
       ]
-    },
-    {
-      "name": "explainer",
-      "description": "writing (and",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/explainer"
-      ]
     }
   ]
 }
