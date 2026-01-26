@@ -125,6 +125,15 @@
       "skills": [
         "./skills/agent-changelog"
       ]
+    },
+    {
+      "name": "record-todos",
+      "description": "Enter todo recording mode to capture ideas without acting on them, then organize and prioritize on exit",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/record-todos"
+      ]
     }
   ]
 }
