@@ -1,22 +1,68 @@
 #!/usr/bin/env bash
+#
+# newskill - Create Claude Code skills interactively
+#
+# Uses Claude Code's /skill-creator to generate production-ready skills
+# with proper SKILL.md, asking clarifying questions before generating.
+#
+# PREREQUISITES:
+#   - Claude Code CLI (https://claude.ai/code)
+#   - /skill-creator skill (auto-installed if missing)
+#   - jq (optional, for marketplace registration)
+#   - npx (for installing skill-creator if needed)
+#
+# INSTALLATION:
+#   1. Download this script:
+#      curl -o ~/.local/bin/newskill https://gist.githubusercontent.com/YOUR_GIST_URL/raw/newskill.sh
+#      chmod +x ~/.local/bin/newskill
+#
+#   2. Or clone and alias:
+#      alias newskill="/path/to/newskill.sh"
+#
+# CONFIGURATION:
+#   Set SKILLS_DIR to your skills output directory:
+#      export SKILLS_DIR="$HOME/.claude/skills"
+#
+#   Optionally set MARKETPLACE_JSON for auto-registration:
+#      export MARKETPLACE_JSON="/path/to/.claude-plugin/marketplace.json"
+#
+# USAGE:
+#   newskill                    # prompts for name and description
+#   newskill my-skill           # prompts for description only
+#   newskill --help
+#
+# EXAMPLES:
+#   $ newskill
+#   Skill name (lowercase-with-hyphens): code-review
+#   Description (one line): Review code for best practices and security issues
+#
+#   Skill: code-review
+#   Description: Review code for best practices and security issues
+#   Output: /Users/you/.claude/skills/code-review/
+#
+#   Launch Claude Code to create this skill? [Y/n] y
+#
+#   Launching Claude Code...
+#   # Claude asks clarifying questions, then generates the skill
+#
 set -euo pipefail
 
-# Auto-discover paths relative to this script's location
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-SKILLS_DIR="$REPO_ROOT/skills"
-MARKETPLACE_JSON="$REPO_ROOT/.claude-plugin/marketplace.json"
+# Configuration - override with environment variables
+SKILLS_DIR="${SKILLS_DIR:-$HOME/.claude/skills}"
+MARKETPLACE_JSON="${MARKETPLACE_JSON:-}"
 
 usage() {
     cat <<EOF
 Usage: newskill [skill-name]
 
 Creates a skill using Claude Code's /skill-creator skill.
-Registers in marketplace.json if present and jq is installed.
 
-If no skill name is provided, you'll be prompted for it.
+Options:
+  -h, --help    Show this help message
 
-Repo: $REPO_ROOT
+Environment variables:
+  SKILLS_DIR        Output directory for skills (default: ~/.claude/skills)
+  MARKETPLACE_JSON  Path to marketplace.json for auto-registration (optional)
 
 Examples:
   newskill                 # prompts for name and description
@@ -44,7 +90,6 @@ restore_backup() {
 
 extract_description() {
     local skill_md="$1"
-    # Extract description from YAML frontmatter
     if [[ -f "$skill_md" ]]; then
         sed -n '/^---$/,/^---$/p' "$skill_md" | grep -E "^description:" | sed 's/^description: *//' | sed 's/^["'"'"']//' | sed 's/["'"'"']$//'
     fi
@@ -115,6 +160,9 @@ if ! check_skill_creator; then
     install_skill_creator
 fi
 
+# Ensure skills directory exists
+mkdir -p "$SKILLS_DIR"
+
 # Get skill name - from arg or prompt
 if [[ $# -ge 1 ]]; then
     SKILL_NAME="$1"
@@ -150,7 +198,7 @@ DESCRIPTION="${DESCRIPTION:-A skill that does X}"
 
 # Ask about marketplace registration if available
 REGISTER_MARKETPLACE=false
-if [[ -f "$MARKETPLACE_JSON" ]] && command -v jq &> /dev/null; then
+if [[ -n "$MARKETPLACE_JSON" ]] && [[ -f "$MARKETPLACE_JSON" ]] && command -v jq &> /dev/null; then
     printf "Register in marketplace.json? [Y/n] "
     read -r -n 1 REPLY
     echo
@@ -201,11 +249,7 @@ claude "Use /skill-creator to create a new skill with:
 
 Follow the skill-creator workflow. Ask me clarifying questions about the skill's purpose and usage patterns before generating. Create a complete, production-ready SKILL.md - not just a template with TODOs.
 
-IMPORTANT:
-- Do NOT use init_skill.py - it creates nested directories incompatible with this monorepo structure
-- Write SKILL.md directly to $SKILL_DIR/SKILL.md (flat structure, no nesting)
-- Do NOT run package_skill.py or create a .skill package
-- Only create subdirectories (scripts/, references/, assets/) if actually needed"
+IMPORTANT: Do NOT run package_skill.py or create a .skill package. Just create the skill directory and files."
 
 # Check if skill was created
 SKILL_MD="$SKILL_DIR/SKILL.md"

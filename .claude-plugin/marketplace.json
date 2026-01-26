@@ -134,6 +134,15 @@
       "skills": [
         "./skills/record-todos"
       ]
+    },
+    {
+      "name": "proposal-review",
+      "description": "Facilitate methodical review of proposals by chunking content, predicting reviewer reactions, and producing feedback adapted to the proposal's format",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/proposal-review"
+      ]
     }
   ]
 }
