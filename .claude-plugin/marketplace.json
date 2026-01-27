@@ -143,6 +143,15 @@
       "skills": [
         "./skills/proposal-review"
       ]
+    },
+    {
+      "name": "optimize-agent-docs",
+      "description": "Evaluate and optimize agent documentation in dotfiles (.claude, .codex, .cursor, .aider) for better discoverability and retrieval efficiency",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/optimize-agent-docs"
+      ]
     }
   ]
 }
