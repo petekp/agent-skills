@@ -152,6 +152,24 @@
       "skills": [
         "./skills/optimize-agent-docs"
       ]
+    },
+    {
+      "name": "exhaustive-systems-analysis",
+      "description": "|",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/exhaustive-systems-analysis"
+      ]
+    },
+    {
+      "name": "checkpoint",
+      "description": "Meta-cognitive decision support that analyzes context and surfaces intelligent next-step options via AskUserQuestion with recommendations",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/checkpoint"
+      ]
     }
   ]
 }
