@@ -338,9 +338,13 @@ claude "Use /skill-creator to create a new skill with:
 - Description: $DESCRIPTION
 - Output directory: $SKILL_DIR/
 
-Follow the skill-creator workflow. Ask me clarifying questions about the skill's purpose and usage patterns before generating. Create a complete, production-ready SKILL.md - not just a template with TODOs.
+Follow the skill-creator workflow. Before generating, gather information about the skill's purpose and usage patterns.
 
-IMPORTANT: Do NOT run package_skill.py or create a .skill package. Just create the skill directory and files."
+IMPORTANT: Use the AskUserQuestion tool to ask clarifying questions interactively. Do NOT list questions as plain text - use AskUserQuestion to present structured choices. Ask 1-2 focused questions at a time.
+
+Create a complete, production-ready SKILL.md - not just a template with TODOs.
+
+Do NOT run package_skill.py or create a .skill package. Just create the skill directory and files."
 
 # Check if skill was created
 SKILL_MD="$SKILL_DIR/SKILL.md"
