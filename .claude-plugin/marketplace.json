@@ -170,6 +170,15 @@
       "skills": [
         "./skills/checkpoint"
       ]
+    },
+    {
+      "name": "process-hunter",
+      "description": "Find and terminate resource-hungry processes to save battery with auto-kill for dev servers and confirmation for unknown processes",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/process-hunter"
+      ]
     }
   ]
 }
