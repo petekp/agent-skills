@@ -275,9 +275,47 @@ if [[ -d "$SKILL_DIR" ]]; then
     fi
 fi
 
-printf "Description (one line): "
-read -r DESCRIPTION
-DESCRIPTION="${DESCRIPTION:-A skill that does X}"
+# Get description - use editor for better editing experience
+get_description() {
+    local tmpfile
+    tmpfile=$(mktemp "${TMPDIR:-/tmp}/newskill-desc.XXXXXX")
+
+    # Create template with instructions
+    cat > "$tmpfile" <<'TEMPLATE'
+# Enter the skill description below (triggers + purpose)
+# Lines starting with # will be ignored
+# Save and close to continue, or leave empty to abort
+
+TEMPLATE
+
+    # Determine editor
+    local editor="${EDITOR:-${VISUAL:-nano}}"
+
+    # Open editor
+    if ! "$editor" "$tmpfile"; then
+        rm -f "$tmpfile"
+        return 1
+    fi
+
+    # Extract non-comment, non-empty lines
+    local desc
+    desc=$(grep -v '^#' "$tmpfile" | grep -v '^[[:space:]]*$' | tr '\n' ' ' | sed 's/  */ /g' | sed 's/^ *//' | sed 's/ *$//')
+    rm -f "$tmpfile"
+
+    echo "$desc"
+}
+
+echo ""
+echo "Opening editor for description..."
+echo "(Save and close when done)"
+echo ""
+
+DESCRIPTION=$(get_description)
+
+if [[ -z "$DESCRIPTION" ]]; then
+    echo "No description provided. Aborted."
+    exit 1
+fi
 
 # Ask about marketplace registration if available
 REGISTER_MARKETPLACE=false
