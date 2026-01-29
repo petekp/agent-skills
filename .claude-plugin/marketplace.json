@@ -173,7 +173,7 @@
     },
     {
       "name": "process-hunter",
-      "description": "Find and terminate resource-hungry processes to save battery with auto-kill for dev servers and confirmation for unknown processes",
+      "description": "CAVEMAN HUNT BAD PROCESS! Me find greedy creature eating fire (CPU) and rocks (memory). Me bonk them. Lightning rock (battery) happy. Tribe proud.",
       "source": "./",
       "strict": false,
       "skills": [
