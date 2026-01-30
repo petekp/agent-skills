@@ -215,6 +215,15 @@
       "skills": [
         "./skills/blog-drafter"
       ]
+    },
+    {
+      "name": "deep-research",
+      "description": "Conduct exhaustive, citation-rich research on any topic using all available tools: web search, browser automation, documentation APIs, and codebase exploration. Prioritizes accuracy over speed, cross-references claims across sources, identifies conflicts, and provides full citations with confidence levels.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/deep-research"
+      ]
     }
   ]
 }
