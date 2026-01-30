@@ -155,7 +155,7 @@
     },
     {
       "name": "exhaustive-systems-analysis",
-      "description": "|",
+      "description": "Systematic audit methodology for rooting out bugs, race conditions, stale docs, and correctness issues. Use for code audits, reviewing agent-written code, or deep analysis of any system.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -196,6 +196,15 @@
       "strict": false,
       "skills": [
         "./skills/blog-drafter"
+      ]
+    },
+    {
+      "name": "explanatory-playground",
+      "description": "Build interactive debugging interfaces that reveal internal system behavior through visualization. Use for state machines, data flow, events, algorithms, render cycles, animations, or any mechanism with hidden internals.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/explanatory-playground"
       ]
     }
   ]
