@@ -179,6 +179,15 @@
       "skills": [
         "./skills/process-hunter"
       ]
+    },
+    {
+      "name": "synthesize-multiple-model-output",
+      "description": "Synthesize outputs from multiple AI models into a verified assessment by cross-referencing claims against actual source code to resolve contradictions and produce a more reliable document than any single model",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/synthesize-multiple-model-output"
+      ]
     }
   ]
 }
