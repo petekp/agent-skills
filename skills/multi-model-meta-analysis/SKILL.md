@@ -1,5 +1,5 @@
 ---
-name: synthesize-multiple-model-output
+name: multi-model-meta-analysis
 description: |
   Synthesize outputs from multiple AI models into a comprehensive, verified assessment. Use when: (1) User pastes feedback/analysis from multiple LLMs (Claude, GPT, Gemini, etc.) about code or a project, (2) User wants to consolidate model outputs into a single reliable document, (3) User needs conflicting model claims resolved against actual source code. This skill verifies model claims against the codebase, resolves contradictions with evidence, and produces a more reliable assessment than any single model.
 ---
