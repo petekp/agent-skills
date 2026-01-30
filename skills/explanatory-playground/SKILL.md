@@ -9,15 +9,49 @@ Build dev-only visualizations that make invisible system behavior visible.
 
 ## Workflow
 
-### 1. Identify what's hidden
+### 1. Clarify the target
 
-Ask: What can't the user see?
+Use AskUserQuestion to understand what needs visualization:
+
+```
+question: "What kind of system should the playground reveal?"
+header: "System type"
+options:
+  - label: "State machine"
+    description: "Finite states with transitions (auth flow, form wizard, game state)"
+  - label: "Data flow"
+    description: "Data transforming through a pipeline (API → transform → render)"
+  - label: "Event system"
+    description: "Publishers and subscribers, event propagation"
+  - label: "Algorithm"
+    description: "Step-by-step logic (sorting, pathfinding, search)"
+```
+
+Then ask what's confusing:
+
+```
+question: "What specifically is hard to understand?"
+header: "Hidden aspect"
+options:
+  - label: "Current state"
+    description: "I can't see what state the system is in right now"
+  - label: "Why transitions happen"
+    description: "I don't know what triggers changes or why"
+  - label: "Data shape"
+    description: "I can't see what the data looks like at each step"
+  - label: "Timing/sequence"
+    description: "Things happen too fast or in unclear order"
+```
+
+### 2. Identify what's hidden
+
+Based on answers, determine what to surface:
 - **State** — Values that change over time
 - **Transitions** — Events that trigger changes
 - **Relationships** — How parts communicate
 - **Logic** — Conditions, thresholds, rules
 
-### 2. Pick visualization approach
+### 3. Pick visualization approach
 
 | System | Visualization | Library |
 |--------|--------------|---------|
@@ -31,7 +65,23 @@ Ask: What can't the user see?
 
 See [references/patterns.md](references/patterns.md) for layouts, code, and implementation details.
 
-### 3. Choose interactivity level
+### 4. Choose interactivity level
+
+Ask if unclear:
+
+```
+question: "How interactive should the playground be?"
+header: "Interactivity"
+options:
+  - label: "Just show me (Recommended)"
+    description: "Real-time display of state and changes"
+  - label: "Let me poke around"
+    description: "Click/hover to inspect details and trace origins"
+  - label: "Let me trigger things"
+    description: "Fire events, modify state, inject test data"
+  - label: "Time travel"
+    description: "Record history, scrub through past states, replay"
+```
 
 | Level | Features | When |
 |-------|----------|------|
@@ -42,7 +92,7 @@ See [references/patterns.md](references/patterns.md) for layouts, code, and impl
 
 Start with 1-2. Add 3-4 when needed.
 
-### 4. Instrument minimally
+### 6. Instrument minimally
 
 **Prefer event emitters** (least invasive):
 ```typescript
@@ -67,7 +117,7 @@ function observable<T extends object>(obj: T) {
 }
 ```
 
-### 5. Create dev-only route
+### 7. Create dev-only route
 
 ```
 app/__dev/[system-name]/page.tsx
@@ -80,7 +130,7 @@ if (process.env.NODE_ENV !== 'development') {
 }
 ```
 
-### 6. Document removal
+### 8. Document removal
 
 Header in every created file:
 ```typescript
