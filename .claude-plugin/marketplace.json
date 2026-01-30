@@ -190,21 +190,21 @@
       ]
     },
     {
-      "name": "blog-drafter",
-      "description": "Interview-driven blog post drafting for technical product audiences. Conducts structured interviews to extract unique insights, then produces drafts with thesis, structure, and research suggestions.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/blog-drafter"
-      ]
-    },
-    {
       "name": "explanatory-playground",
       "description": "Build interactive debugging interfaces that reveal internal system behavior through visualization. Use for state machines, data flow, events, algorithms, render cycles, animations, or any mechanism with hidden internals.",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/explanatory-playground"
+      ]
+    },
+    {
+      "name": "hierarchical-matching-systems",
+      "description": "Expertise in architecting, implementing, reviewing, and debugging hierarchical matching systems including two-sided matching (Gale-Shapley), assignment/optimization (Hungarian algorithm), multi-level hierarchy matching, and entity resolution across hierarchies.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/hierarchical-matching-systems"
       ]
     },
     {
