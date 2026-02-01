@@ -224,6 +224,15 @@
       "skills": [
         "./skills/deep-research"
       ]
+    },
+    {
+      "name": "explainer-visuals",
+      "description": "Create high-quality animated explainer visuals for essays and blog posts. Use when visualizing concepts, processes, data, or ideas with interactive web animations. Outputs self-contained HTML/CSS/JS.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/explainer-visuals"
+      ]
     }
   ]
 }
