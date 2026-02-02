@@ -242,6 +242,15 @@
       "skills": [
         "./skills/data-sleuth"
       ]
+    },
+    {
+      "name": "posthog-analytics",
+      "description": "Product analytics expert using PostHog MCP. Surface insights, create dashboards, analyze funnels, track metrics, set up experiments, and understand user behavior with persistent product context.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/posthog-analytics"
+      ]
     }
   ]
 }
