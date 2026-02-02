@@ -233,6 +233,15 @@
       "skills": [
         "./skills/explainer-visuals"
       ]
+    },
+    {
+      "name": "data-sleuth",
+      "description": "Identify non-obvious signals, hidden patterns, and clever correlations in datasets using investigative data analysis techniques. Pairs with personality-profiler for enhanced signal extraction.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/data-sleuth"
+      ]
     }
   ]
 }
