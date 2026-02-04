@@ -262,12 +262,12 @@
       ]
     },
     {
-      "name": "session-handoff",
+      "name": "handoff",
       "description": "Generate a smart bootstrap prompt to continue the current conversation in a fresh session from where you left off",
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/session-handoff"
+        "./skills/handoff"
       ]
     }
   ]

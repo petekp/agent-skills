@@ -1,5 +1,5 @@
 ---
-name: session-handoff
+name: handoff
 description: >
   Generate a smart bootstrap prompt to continue the current conversation in a fresh session.
   Use when (1) approaching context limits, (2) user says "handoff", "bootstrap", "continue later",
@@ -8,7 +8,7 @@ description: >
   context while minimizing tokens.
 ---
 
-# Session Handoff
+# Handoff
 
 Generate a bootstrap prompt that enables seamless conversation continuity in a new session.
 
