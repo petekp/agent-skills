@@ -278,6 +278,15 @@
       "skills": [
         "./skills/aesthetic-guide"
       ]
+    },
+    {
+      "name": "fixer",
+      "description": "Cold, methodical diagnostician for when you're stuck in agent-assisted app development. Diagnoses agent loops, architectural rot, environment corruption, and requirements drift, then intervenes precisely to unblock you.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/fixer"
+      ]
     }
   ]
 }
