@@ -272,7 +272,7 @@
     },
     {
       "name": "aesthetic-guide",
-      "description": "Research a UI design aesthetic and produce exhaustive, implementation-ready design guidelines with exact CSS values, color palettes, component states, animations, and typography",
+      "description": "Research a UI design aesthetic (brutalist, glassmorphism, cyberpunk, Apple HIG, neumorphism, Swiss modernist, Material Design, art deco, vaporwave, etc.) and produce exhaustive, implementation-ready design guidelines with exact CSS values, color palettes, component states, animations, and typography",
       "source": "./",
       "strict": false,
       "skills": [

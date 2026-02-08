@@ -1,5 +1,7 @@
 # Aesthetic Catalog
 
+> Last updated: 2026-02-07
+
 Pre-researched implementation data for common UI aesthetics. Use as a starting point when generating a full design system guide per the output schema. Cross-reference with web research for the latest trends and variations.
 
 ## Table of Contents
