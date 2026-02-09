@@ -296,6 +296,15 @@
       "skills": [
         "./skills/shape-up"
       ]
+    },
+    {
+      "name": "agent-telemetry",
+      "description": "Make application behavior visible to coding agents by exposing structured logs and telemetry endpoints. Guides adding structured logging, exposing logs for agent access, and documenting how to query them.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/agent-telemetry"
+      ]
     }
   ]
 }
