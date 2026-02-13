@@ -305,6 +305,15 @@
       "skills": [
         "./skills/agent-telemetry"
       ]
+    },
+    {
+      "name": "review-package",
+      "description": "Create a comprehensive review package of your current work to hand off to another LLM for code review, architecture review, or both",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/review-package"
+      ]
     }
   ]
 }
