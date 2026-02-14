@@ -323,6 +323,15 @@
       "skills": [
         "./skills/codebase-study-guide"
       ]
+    },
+    {
+      "name": "docs-changelog",
+      "description": "Write changelog entries for open source documentation sites using Keep a Changelog format by reviewing git commits since the last entry",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/docs-changelog"
+      ]
     }
   ]
 }
