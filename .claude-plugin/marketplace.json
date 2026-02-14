@@ -332,6 +332,15 @@
       "skills": [
         "./skills/docs-changelog"
       ]
+    },
+    {
+      "name": "interactive-study-guide",
+      "description": "Transform a codebase study guide into a polished interactive web experience with scroll-driven storytelling, interactive architecture diagrams, and animated code walkthroughs",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/interactive-study-guide"
+      ]
     }
   ]
 }
