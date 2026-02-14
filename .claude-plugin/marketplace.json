@@ -314,6 +314,15 @@
       "skills": [
         "./skills/review-package"
       ]
+    },
+    {
+      "name": "codebase-study-guide",
+      "description": "Generate a pedagogically-grounded study guide for learning an unfamiliar codebase using evidence-based learning techniques",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/codebase-study-guide"
+      ]
     }
   ]
 }
