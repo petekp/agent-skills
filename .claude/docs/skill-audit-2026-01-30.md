@@ -434,30 +434,13 @@ Skills between 300-450 lines that would benefit from reference extraction:
 
 ---
 
-### dev-server — Grade: A
-
-**Lines**: 53
-
-**Strengths:**
-- Concise and actionable
-- Scripts for port management
-- Framework-specific notes
-
-**Issues:**
-- None significant
-
-**Quick wins:**
-- None needed
-
----
-
 ## Domain Coverage Map
 
 | Domain | Skills | Coverage |
 |--------|--------|----------|
 | **Design & UI** | interaction-design, typography, transparent-ui, macos-app-design, tuning-panel | Complete |
 | **Code Quality** | agentic-docs, exhaustive-systems-analysis, multi-model-meta-analysis | Complete |
-| **Development Workflow** | dev-server, manual-testing, capture-learning, record-todos, checkpoint | Complete |
+| **Development Workflow** | manual-testing, capture-learning, record-todos, checkpoint | Complete |
 | **System Administration** | unix-macos-engineer, process-hunter | Complete |
 | **Agent/AI Tools** | autonomous-agent-readiness, agent-changelog, optimize-agent-docs, orchestrate-swarms | Complete |
 | **Specialized Domains** | rust, model-first-reasoning, hierarchical-matching-systems, proposal-review | Complete |
