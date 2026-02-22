@@ -332,6 +332,15 @@
       "skills": [
         "./skills/interactive-study-guide"
       ]
+    },
+    {
+      "name": "de-slop",
+      "description": "Remove LLM-isms and AI writing patterns from text to restore natural human voice",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/de-slop"
+      ]
     }
   ]
 }
