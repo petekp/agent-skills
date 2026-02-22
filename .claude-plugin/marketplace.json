@@ -341,6 +341,15 @@
       "skills": [
         "./skills/de-slop"
       ]
+    },
+    {
+      "name": "dead-code-sweep",
+      "description": "Systematically identify and remove dead code, redundant implementations, and orphaned artifacts in agent-maintained codebases",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/dead-code-sweep"
+      ]
     }
   ]
 }
