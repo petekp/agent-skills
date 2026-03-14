@@ -1,0 +1,41 @@
+{
+  "eval_id": "eval-1-god-module-split",
+  "variant": "without_skill",
+  "expectations": [
+    {
+      "text": "module_map_produced",
+      "passed": true,
+      "evidence": "migration-manifest.md contains an 'Architecture Layers' section with 3 explicit layers, a 'Module File Map' table listing 9 modules with layer assignments, and a 'Dependency Validation' section with per-layer dependency rules (e.g., 'No Layer 2 module depends on another Layer 2 module')."
+    },
+    {
+      "text": "skeleton_compiles",
+      "passed": true,
+      "evidence": "skeleton-verification.txt shows cargo test passing (3 tests ok). migration-manifest.md states 'cargo check --bin scaffold-check: PASS' and 'cargo check --lib: PASS'. The verification file only captures test output, not raw cargo check output, but the manifest confirms compilation success."
+    },
+    {
+      "text": "correct_module_count",
+      "passed": true,
+      "evidence": "Module File Map lists exactly 9 modules: domain, auth, storage, notification, task_query, analytics, task_service, project_service, user_service. This falls within the 5-9 range."
+    },
+    {
+      "text": "dependency_direction_correct",
+      "passed": true,
+      "evidence": "The manifest has a 'Dependency Validation' section with explicit layer rules: Layer 1 (domain) has no dependencies, Layer 2 depends only on domain, Layer 3 depends on domain + Layer 2 traits. It also addresses circular dependency resolution between task_service and project_service via a ProjectValidator trait. Verified dependency list shows no upward or circular dependencies."
+    },
+    {
+      "text": "stubs_not_logic",
+      "passed": true,
+      "evidence": "task_service/mod.rs shows all trait implementation methods use todo!() macros (e.g., 'todo!(\"TaskServiceImpl::create_task\")') with no real business logic. The manifest notes 'dead_code warnings expected for stubs', consistent with stub-only bodies."
+    },
+    {
+      "text": "migration_manifest_produced",
+      "passed": false,
+      "evidence": "migration-manifest.md exists and maps types/methods from lib.rs to new modules, but it lacks systematic line number references. Only one line number is mentioned (lib.rs:574 for the track_event bug). The manifest does not include source line ranges for each migration item as required."
+    },
+    {
+      "text": "migration_actions_categorized",
+      "passed": false,
+      "evidence": "The manifest does not use PORT/ADAPT/REWRITE/NEW/DELETE categories or close equivalents. The Type Migration table uses a 'Status' column with values like 'Skeleton' and 'REMOVED'. The Method Migration tables use a 'Notes' column with free-text descriptions. These are not action categories in the required sense."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "eval_id": "eval-3-circular-dependency",
+  "variant": "without_skill",
+  "expectations": [
+    {
+      "text": "detects_circular_dependency",
+      "passed": true,
+      "evidence": "Identifies the cycle under 'CRITICAL: Circular Dependency Between task_service and project_service' in the Issues Found section, listing four concrete problems it causes (tight coupling, API ergonomics, cannot split into crates, ownership conflicts)."
+    },
+    {
+      "text": "proposes_resolution",
+      "passed": true,
+      "evidence": "Recommends extracting a TaskQuery trait at Layer 2 under 'Recommended Fix,' describing the standard 'extract interface to lower layer' pattern. However, the fix was not actually applied to the scaffold -- it was only suggested as a follow-up."
+    },
+    {
+      "text": "does_not_silently_work_around",
+      "passed": false,
+      "evidence": "The baseline scaffolded the cycle using &dyn trait object parameters (e.g., create_task accepts &dyn ProjectService, get_stats accepts &dyn TaskService) to make the code compile. It did flag the issue afterward, but the primary output is a working scaffold that encodes the circular dependency. The workaround was applied first, then flagged -- this is 'work around then warn' rather than 'refuse to proceed.'"
+    },
+    {
+      "text": "resolves_before_scaffolding",
+      "passed": false,
+      "evidence": "The scaffold was built with the cycle intact: task_service depends on project_service and project_service depends on task_service, connected via &dyn parameters. The circular dependency is noted in an 'Issues Found' section after the scaffold summary, not resolved before scaffolding."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "god-module-split",
+  "configuration": "with_skill",
+  "expectations": [
+    { "text": "Plan file (refactor-plan.md) created with numbered chunks", "passed": true, "evidence": "refactor-plan.md exists with 8 chunks, entry/exit criteria, and commit messages" },
+    { "text": "Manifest file (refactor-manifest.json) tracks progress", "passed": true, "evidence": "refactor-manifest.json exists, status: completed, all 8 chunks completed" },
+    { "text": "Log file (refactor-log.md) records execution history", "passed": true, "evidence": "refactor-log.md exists with 10+ verification mentions" },
+    { "text": "All 4 domain modules extracted (auth, users, data, email)", "passed": true, "evidence": "src/ contains auth.js, users.js, data.js, email.js" },
+    { "text": "God module (core.js) removed", "passed": true, "evidence": "core.js not present in src/" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "node tests/run.js: 17 passed, 0 failed" },
+    { "text": "Verification performed between chunks (not just at end)", "passed": true, "evidence": "Log shows 10 verification/test-pass mentions across 8 chunks" }
+  ]
+}

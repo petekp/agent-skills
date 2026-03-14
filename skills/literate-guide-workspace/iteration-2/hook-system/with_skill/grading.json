@@ -1,0 +1,36 @@
+{
+  "guide_path": "iteration-2/hook-system/with_skill/outputs/literate-guide.md",
+  "expectations": [
+    {
+      "text": "has_numbered_sections",
+      "passed": true,
+      "evidence": "Found 69 \u00a7N references: ['\u00a73', '\u00a712', '\u00a71', '\u00a72', '\u00a78', '\u00a73', '\u00a73', '\u00a75']"
+    },
+    {
+      "text": "has_cross_references",
+      "passed": true,
+      "evidence": "Found 56 cross-references in prose body"
+    },
+    {
+      "text": "has_code_excerpts_with_paths",
+      "passed": true,
+      "evidence": "Found ~17 code blocks with file path annotations out of 20 total blocks"
+    },
+    {
+      "text": "has_design_reasoning",
+      "passed": true,
+      "evidence": "Found 11 design reasoning indicators"
+    },
+    {
+      "text": "has_mermaid_diagrams",
+      "passed": true,
+      "evidence": "Found 2 Mermaid diagram(s)"
+    },
+    {
+      "text": "has_narrative_transitions",
+      "passed": false,
+      "evidence": "Found 2 narrative transition phrases"
+    }
+  ],
+  "pass_rate": 0.8333333333333334
+}

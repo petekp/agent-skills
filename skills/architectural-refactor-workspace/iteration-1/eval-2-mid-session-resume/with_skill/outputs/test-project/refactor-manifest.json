@@ -1,0 +1,57 @@
+{
+  "plan_file": "refactor-plan.md",
+  "assessment_source": "ASSESSMENT.md",
+  "created": "2026-03-04T10:00:00Z",
+  "total_chunks": 4,
+  "current_chunk": 4,
+  "status": "completed",
+  "preflight_passed": true,
+  "verification": {
+    "test": "node tests/run.js",
+    "typecheck": "echo 'typecheck passed'",
+    "lint": "echo 'lint passed'",
+    "detected_at": "2026-03-04T10:05:00Z"
+  },
+  "chunks": [
+    {
+      "id": 1,
+      "name": "Extract auth module",
+      "status": "completed",
+      "depends_on": [],
+      "verification": { "tests": "pass", "typecheck": "pass", "lint": "pass" },
+      "commit_sha": "abc1234",
+      "started_at": "2026-03-04T10:10:00Z",
+      "completed_at": "2026-03-04T10:25:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Extract email module",
+      "status": "completed",
+      "depends_on": [1],
+      "verification": { "tests": "pass", "typecheck": "pass", "lint": "pass" },
+      "commit_sha": "skipped-no-git-commits",
+      "started_at": "2026-03-05T10:00:00Z",
+      "completed_at": "2026-03-05T10:05:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Extract data processing module",
+      "status": "completed",
+      "depends_on": [2],
+      "verification": { "tests": "pass", "typecheck": "pass", "lint": "pass" },
+      "commit_sha": "skipped-no-git-commits",
+      "started_at": "2026-03-05T10:06:00Z",
+      "completed_at": "2026-03-05T10:10:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Extract users module and update consumers",
+      "status": "completed",
+      "depends_on": [3],
+      "verification": { "tests": "pass", "typecheck": "pass", "lint": "pass" },
+      "commit_sha": "skipped-no-git-commits",
+      "started_at": "2026-03-05T10:11:00Z",
+      "completed_at": "2026-03-05T10:18:00Z"
+    }
+  ]
+}

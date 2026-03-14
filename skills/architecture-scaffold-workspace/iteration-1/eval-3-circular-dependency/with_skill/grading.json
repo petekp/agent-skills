@@ -1,0 +1,26 @@
+{
+  "eval_id": "eval-3-circular-dependency",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "detects_circular_dependency",
+      "passed": true,
+      "evidence": "Explicitly identifies the cycle in both response.md and module-map.md: 'task_service depends on project_service because it needs ProjectService::get_project... project_service depends on task_service because it needs TaskService::filter_by_project.' Module map has a dedicated section titled 'CIRCULAR DEPENDENCY DETECTED -- ASSESSMENT REQUIRES CORRECTION.'"
+    },
+    {
+      "text": "proposes_resolution",
+      "passed": true,
+      "evidence": "Proposes and implements two concrete fixes: (1) Extract a task_query module at Layer 2 so project_service depends on task_query instead of task_service, and (2) dependency inversion via a ProjectValidator trait so task_service declares what it needs without importing project_service. The corrected DAG is shown and verified."
+    },
+    {
+      "text": "does_not_silently_work_around",
+      "passed": true,
+      "evidence": "Flags it as an architectural problem: 'This is not a valid architecture. In Rust, circular use crate:: imports between sibling modules create a compilation failure... a cycle between two service modules is an architectural smell indicating the boundaries are drawn incorrectly.' The skill's own rules are cited: 'Circular dependency between modules means the module boundaries are drawn wrong. Stop.'"
+    },
+    {
+      "text": "resolves_before_scaffolding",
+      "passed": true,
+      "evidence": "Response states: 'This detection happened before any code was written, during the module map phase.' The module map contains the corrected architecture, and the skeleton was built from the corrected DAG (with task_query at Layer 2). No cyclic code was ever scaffolded."
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "skill_name": "architectural-refactor",
+  "iteration": 1,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "god-module-split",
+          "pass_rate": 1.0,
+          "passed": 7,
+          "total": 7,
+          "tokens": 54693,
+          "duration_seconds": 289.2
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "mid-session-resume",
+          "pass_rate": 1.0,
+          "passed": 5,
+          "total": 5,
+          "tokens": 44213,
+          "duration_seconds": 233.4
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "verification-failure",
+          "pass_rate": 1.0,
+          "passed": 6,
+          "total": 6,
+          "tokens": 52489,
+          "duration_seconds": 334.8
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 1.0,
+        "stddev_pass_rate": 0.0,
+        "mean_tokens": 50465,
+        "mean_duration_seconds": 285.8
+      }
+    },
+    {
+      "name": "without_skill",
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "god-module-split",
+          "pass_rate": 0.43,
+          "passed": 3,
+          "total": 7,
+          "tokens": 23382,
+          "duration_seconds": 85.3
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "mid-session-resume",
+          "pass_rate": 1.0,
+          "passed": 5,
+          "total": 5,
+          "tokens": 33194,
+          "duration_seconds": 187.5
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "verification-failure",
+          "pass_rate": 0.33,
+          "passed": 2,
+          "total": 6,
+          "tokens": 21965,
+          "duration_seconds": 87.4
+        }
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.59,
+        "stddev_pass_rate": 0.3,
+        "mean_tokens": 26180,
+        "mean_duration_seconds": 120.1
+      }
+    }
+  ],
+  "delta": {
+    "pass_rate": "+0.41 (1.00 vs 0.59)",
+    "tokens": "+24285 (50465 vs 26180)",
+    "duration": "+165.7s (285.8s vs 120.1s)"
+  },
+  "analyst_observations": [
+    "The skill achieves 100% pass rate on all process assertions (plan, manifest, log, verification gates). The baseline achieves 0% on these — it never creates tracking artifacts.",
+    "Both configurations achieve identical code outcomes: modules extracted, tests passing. The difference is entirely in the process discipline.",
+    "Eval 2 (mid-session resume) is non-discriminating: the baseline also read the manifest and resumed correctly. When an existing plan is present, the skill adds less marginal value.",
+    "Eval 3 baseline kept core.js as a facade rather than deleting it — a common pattern where agents take the safe route. The skill's plan explicitly called for deletion.",
+    "The skill costs ~2x more tokens and ~2.4x more time. This is the cost of verification gates and manifest updates. Whether that tradeoff is worth it depends on risk tolerance and codebase size.",
+    "The verification-failure eval didn't actually trigger a failure — the agents were smart enough to use re-export facades during migration. A harder test fixture would be needed to test the failure-handling path."
+  ]
+}

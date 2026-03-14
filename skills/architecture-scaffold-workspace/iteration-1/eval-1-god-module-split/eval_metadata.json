@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "god-module-split",
+  "prompt": "I have a Rust project with a god object that needs to be split up. The architecture assessment is at ASSESSMENT.md. Please scaffold the new architecture with full type skeleton, prove it compiles, then create a migration manifest.",
+  "assertions": [
+    {"id": "module_map_produced", "description": "Created a module map document with explicit dependency rules per layer"},
+    {"id": "skeleton_compiles", "description": "Skeleton passes cargo check with zero errors"},
+    {"id": "correct_module_count", "description": "5-9 distinct modules matching the assessment's recommendations"},
+    {"id": "dependency_direction_correct", "description": "Dependency rules prohibit inward-to-outward imports and are stated explicitly"},
+    {"id": "stubs_not_logic", "description": "Function bodies are todo!()/unimplemented!() only, no real business logic"},
+    {"id": "migration_manifest_produced", "description": "Migration manifest exists with source file paths, line numbers, and action categories"},
+    {"id": "migration_actions_categorized", "description": "Manifest uses PORT/ADAPT/REWRITE/NEW/DELETE categories or close equivalents"}
+  ]
+}

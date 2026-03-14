@@ -1,0 +1,26 @@
+{
+  "skill_name": "literate-guide",
+  "evals": [
+    {
+      "id": 0,
+      "name": "hook-system",
+      "prompt": "Write a literate guide for the hook system in capacitor",
+      "expected_output": "A narrative markdown document covering the hud-hook Rust crate, explaining what it does, why it exists, and how it captures Claude Code events — written in Knuth's literate programming style with numbered sections and cross-references",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "session-tracking",
+      "prompt": "Tell the story of how capacitor tracks and restores Claude Code sessions",
+      "expected_output": "A narrative markdown document tracing the cross-cutting flow from hook event capture through the Rust runtime core to the Swift UI, explaining the design decisions along the way",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "runtime-core",
+      "prompt": "I need to understand the capacitor runtime core — can you write me a narrative walkthrough of how it works?",
+      "expected_output": "A narrative markdown document covering the capacitor-core Rust crate's architecture, state management, storage, and how it serves data to the Swift app",
+      "files": []
+    }
+  ]
+}

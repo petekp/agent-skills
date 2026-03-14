@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "mid-session-resume",
+  "configuration": "with_skill",
+  "expectations": [
+    { "text": "Read manifest before starting work", "passed": true, "evidence": "Agent read refactor-manifest.json first, identified chunk 1 as completed" },
+    { "text": "Did not redo completed chunk 1 (auth extraction)", "passed": true, "evidence": "Started execution at chunk 2 (email), chunk 1 was already done" },
+    { "text": "Started at correct chunk (chunk 2: email)", "passed": true, "evidence": "First chunk executed was chunk 2: Extract email module" },
+    { "text": "Manifest updated to reflect completion", "passed": true, "evidence": "Manifest shows status: completed, all 4 chunks completed" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "node tests/run.js: 17 passed, 0 failed" }
+  ]
+}

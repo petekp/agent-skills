@@ -1,0 +1,41 @@
+{
+  "eval_id": "eval-1-god-module-split",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "module_map_produced",
+      "passed": true,
+      "evidence": "module-map.md exists with 3 explicit layers and dependency rules: Layer 1 (domain) imports nothing, Layer 2 (auth, storage, notification, query, analytics) imports domain only, Layer 3 (task_service, project_service, user_service) imports domain + Layer 2 traits. Each module lists location, responsibility, types, and dependency rule."
+    },
+    {
+      "text": "skeleton_compiles",
+      "passed": true,
+      "evidence": "cargo check --bin scaffold-check completed successfully with 0 errors and 39 dead-code warnings (expected for unused skeleton stubs). Output: 'Finished dev profile target(s) in 0.01s'."
+    },
+    {
+      "text": "correct_module_count",
+      "passed": true,
+      "evidence": "9 distinct modules: domain, auth, storage, notification, query, analytics, task_service, project_service, user_service. This falls within the 5-9 range."
+    },
+    {
+      "text": "dependency_direction_correct",
+      "passed": true,
+      "evidence": "Module map explicitly states: 'No Layer 2 module may depend on another Layer 2 module. Layer 3 modules depend on Layer 2 traits (not implementations).' Layer 1 imports nothing. Verified in source: domain has no crate:: imports, Layer 2 modules only import crate::domain::*, Layer 3 modules import crate::domain + crate::auth/crate::notification traits. Skeleton verification doc confirms all dependency direction checks passed."
+    },
+    {
+      "text": "stubs_not_logic",
+      "passed": true,
+      "evidence": "All service implementation method bodies use todo!() exclusively. Checked: DefaultAuthPolicy (5 methods, all todo!()), JsonFileStorage (6 methods, all todo!()), DefaultNotificationService (2 methods, all todo!()), CachedTaskQuery (1 method, todo!()), BufferedAnalyticsCollector (3 methods, all todo!()), TaskServiceImpl (5 methods, all todo!()), ProjectServiceImpl (2 methods, all todo!()), UserServiceImpl (2 methods, all todo!()). Domain module contains is_valid_transition with real logic, but this is an extracted domain rule, not a service stub."
+    },
+    {
+      "text": "migration_manifest_produced",
+      "passed": true,
+      "evidence": "migration-manifest.md exists with source file paths (e.g., 'src/lib.rs:652-656'), line numbers, and action categories for every method across all modules. Covers DefaultAuthPolicy, JsonFileStorage, DefaultNotificationService, CachedTaskQuery, BufferedAnalyticsCollector, TaskServiceImpl, ProjectServiceImpl, UserServiceImpl, domain, and DELETE candidates."
+    },
+    {
+      "text": "migration_actions_categorized",
+      "passed": true,
+      "evidence": "Manifest uses PORT, ADAPT, REWRITE, and DELETE categories. PORT used for straightforward extractions (e.g., save_tasks, register_hook). ADAPT used where signatures or dependencies change (e.g., filter_tasks, create_task). REWRITE used for broken code needing fresh implementation (track_event). DELETE used for obsoleted items (auto_save, invalidate_filter_cache, TaskFlowEngine struct). NEW category not used but not needed as no entirely new functionality was identified. All four used categories match the expected set."
+    }
+  ]
+}

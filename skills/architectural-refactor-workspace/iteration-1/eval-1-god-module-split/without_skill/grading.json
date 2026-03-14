@@ -1,0 +1,14 @@
+{
+  "eval_id": 1,
+  "eval_name": "god-module-split",
+  "configuration": "without_skill",
+  "expectations": [
+    { "text": "Plan file (refactor-plan.md) created with numbered chunks", "passed": false, "evidence": "No refactor-plan.md created — went straight to coding" },
+    { "text": "Manifest file (refactor-manifest.json) tracks progress", "passed": false, "evidence": "No manifest file created" },
+    { "text": "Log file (refactor-log.md) records execution history", "passed": false, "evidence": "No log file created" },
+    { "text": "All 4 domain modules extracted (auth, users, data, email)", "passed": true, "evidence": "src/ contains auth.js, users.js, data.js, email.js" },
+    { "text": "God module (core.js) removed", "passed": true, "evidence": "core.js not present in src/" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "node tests/run.js: 17 passed, 0 failed" },
+    { "text": "Verification performed between chunks (not just at end)", "passed": false, "evidence": "No chunked execution or intermediate verification — did it all at once" }
+  ]
+}

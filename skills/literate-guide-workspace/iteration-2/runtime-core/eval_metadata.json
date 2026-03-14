@@ -1,0 +1,47 @@
+{
+  "eval_id": 2,
+  "eval_name": "runtime-core",
+  "prompt": "I need to understand the capacitor runtime core — can you write me a narrative walkthrough of how it works?",
+  "assertions": [
+    {
+      "name": "has_numbered_sections",
+      "description": "Uses §N notation for section numbering",
+      "type": "programmatic"
+    },
+    {
+      "name": "has_cross_references",
+      "description": "Contains §N cross-references in prose (not just headings) linking sections together",
+      "type": "programmatic"
+    },
+    {
+      "name": "has_code_excerpts_with_paths",
+      "description": "Code blocks include file path annotations (e.g., // path/to/file.rs:LL)",
+      "type": "programmatic"
+    },
+    {
+      "name": "has_design_reasoning",
+      "description": "Contains explicit design decision discussion — why choices were made, alternatives considered",
+      "type": "programmatic"
+    },
+    {
+      "name": "has_mermaid_diagrams",
+      "description": "Includes at least one Mermaid diagram",
+      "type": "programmatic"
+    },
+    {
+      "name": "has_narrative_transitions",
+      "description": "Sections connect with forward/backward prose transitions, not just standalone entries",
+      "type": "programmatic"
+    },
+    {
+      "name": "prose_before_code",
+      "description": "Each major code block is preceded by explanatory prose introducing the idea",
+      "type": "qualitative"
+    },
+    {
+      "name": "reads_as_essay",
+      "description": "The document has a narrative arc — motivation, development, resolution — not a flat module-by-module listing",
+      "type": "qualitative"
+    }
+  ]
+}

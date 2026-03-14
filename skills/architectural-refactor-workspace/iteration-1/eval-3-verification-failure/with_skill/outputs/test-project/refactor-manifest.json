@@ -1,0 +1,87 @@
+{
+  "plan_file": "refactor-plan.md",
+  "assessment_source": "ASSESSMENT.md",
+  "created": "2026-03-05",
+  "total_chunks": 7,
+  "current_chunk": 7,
+  "status": "completed",
+  "preflight_passed": true,
+  "verification": {
+    "test": "npm test",
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "detected_at": "2026-03-05"
+  },
+  "chunks": [
+    {
+      "id": 1,
+      "name": "Extract auth.js from core.js",
+      "status": "completed",
+      "depends_on": [],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 2,
+      "name": "Extract email.js from core.js",
+      "status": "completed",
+      "depends_on": [1],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 3,
+      "name": "Extract data.js from core.js",
+      "status": "completed",
+      "depends_on": [2],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 4,
+      "name": "Extract users.js from core.js",
+      "status": "completed",
+      "depends_on": [3],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 5,
+      "name": "Update api.js imports to use new modules",
+      "status": "completed",
+      "depends_on": [4],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 6,
+      "name": "Update workers.js imports to use new modules",
+      "status": "completed",
+      "depends_on": [5],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    },
+    {
+      "id": 7,
+      "name": "Update tests to import from new modules and delete core.js",
+      "status": "completed",
+      "depends_on": [6],
+      "verification": "pass — 17/17 tests",
+      "commit_sha": null,
+      "started_at": "2026-03-05",
+      "completed_at": "2026-03-05"
+    }
+  ]
+}

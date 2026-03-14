@@ -1,0 +1,26 @@
+{
+  "eval_id": "eval-2-vague-spec",
+  "variant": "without_skill",
+  "expectations": [
+    {
+      "text": "asks_clarifying_questions",
+      "passed": true,
+      "evidence": "The response includes a 'What I'd Ask You First' section with 5 questions covering storage backend flexibility, notification dispatch model, analytics destination, public API surface, and error granularity. However, it then immediately answers its own questions with assumptions and proceeds to build the full scaffold."
+    },
+    {
+      "text": "identifies_missing_modules",
+      "passed": false,
+      "evidence": "The response does not flag that the spec fails to specify which modules to extract. It notes the assessment 'leaves a lot of design decisions open' but does not identify the gap between the 2 modules mentioned in the spec and the 7+ concerns in the code. Instead, it assumes 5 modules (models, storage, services, notifications, analytics) and proceeds."
+    },
+    {
+      "text": "identifies_missing_dependencies",
+      "passed": false,
+      "evidence": "The response does not flag that dependency rules are unspecified in the assessment. It defines dependency rules in the architecture document ('Services depend on traits, never on concrete implementations') but presents these as decided facts rather than identifying them as gaps in the spec that need user input."
+    },
+    {
+      "text": "does_not_blindly_scaffold",
+      "passed": false,
+      "evidence": "The response produces a full architecture plan with a complete 18-file module map, concrete trait definitions (Storage, NotificationSink, AnalyticsCollector), a dependency diagram, and a 5-phase migration strategy -- all built from self-stated assumptions on an underspecified assessment. It says 'Given those assumptions, I created a modular architecture' and lists the scaffolded files as deliverables. This is confidently building a full architecture from a vague spec."
+    }
+  ]
+}

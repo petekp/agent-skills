@@ -1,0 +1,12 @@
+/Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/deps/serde-f3e7e9b7a06be616.d: /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/build/serde-2beb76a2a4a45d11/out/private.rs
+
+/Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/deps/libserde-f3e7e9b7a06be616.rmeta: /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/build/serde-2beb76a2a4a45d11/out/private.rs
+
+/Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/Users/petepetrash/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/build/serde-2beb76a2a4a45d11/out/private.rs:
+
+# env-dep:OUT_DIR=/Users/petepetrash/Code/agent-skills/skills/architecture-scaffold-workspace/test-project/target/debug/build/serde-2beb76a2a4a45d11/out

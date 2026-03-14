@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "verification-failure",
+  "prompt": "I have an assessment of my project's architecture in ASSESSMENT.md. Execute the refactoring. Note: the test for handleUploadCSV is sensitive to import paths — if you change how data.js is imported in api.js, the test may break.",
+  "assertions": []
+}

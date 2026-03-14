@@ -1,0 +1,36 @@
+{
+  "guide_path": "iteration-1/hook-system/with_skill/outputs/literate-guide.md",
+  "expectations": [
+    {
+      "text": "has_numbered_sections",
+      "passed": false,
+      "evidence": "Found 0 \u00a7N references: []"
+    },
+    {
+      "text": "has_cross_references",
+      "passed": false,
+      "evidence": "Found 0 cross-references in prose body"
+    },
+    {
+      "text": "has_code_excerpts_with_paths",
+      "passed": true,
+      "evidence": "Found ~21 code blocks with file path annotations out of 23 total blocks"
+    },
+    {
+      "text": "has_design_reasoning",
+      "passed": true,
+      "evidence": "Found 13 design reasoning indicators"
+    },
+    {
+      "text": "has_mermaid_diagrams",
+      "passed": true,
+      "evidence": "Found 3 Mermaid diagram(s)"
+    },
+    {
+      "text": "has_narrative_transitions",
+      "passed": false,
+      "evidence": "Found 2 narrative transition phrases"
+    }
+  ],
+  "pass_rate": 0.5
+}

@@ -1,0 +1,138 @@
+{
+  "metadata": {
+    "skill_name": "literate-guide",
+    "skill_path": "/Users/petepetrash/Code/agent-skills/skills/literate-guide",
+    "executor_model": "claude-opus-4-6",
+    "analyzer_model": "claude-opus-4-6",
+    "timestamp": "2026-03-14T04:06:31Z",
+    "evals_run": ["hook-system", "session-tracking", "runtime-core"],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_name": "hook-system",
+      "config": "with_skill",
+      "pass_rate": 0.50,
+      "passed": 3,
+      "total": 6,
+      "time_seconds": 254.2,
+      "tokens": 78621,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": false, "evidence": "Used S1-S14 notation instead of §N"},
+        {"text": "has_cross_references", "passed": false, "evidence": "Has 12+ (SN) cross-refs but used S not §"},
+        {"text": "has_code_excerpts_with_paths", "passed": true, "evidence": "21 of 23 code blocks annotated with file paths"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "13 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": true, "evidence": "3 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": false, "evidence": "2 transition phrases (threshold is 3)"}
+      ]
+    },
+    {
+      "eval_name": "hook-system",
+      "config": "without_skill",
+      "pass_rate": 0.17,
+      "passed": 1,
+      "total": 6,
+      "time_seconds": 267.7,
+      "tokens": 86154,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": false, "evidence": "No §N references"},
+        {"text": "has_cross_references", "passed": false, "evidence": "No cross-references"},
+        {"text": "has_code_excerpts_with_paths", "passed": false, "evidence": "1 of 37 code blocks with path annotations"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "6 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": false, "evidence": "0 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": false, "evidence": "1 transition phrase"}
+      ]
+    },
+    {
+      "eval_name": "session-tracking",
+      "config": "with_skill",
+      "pass_rate": 1.00,
+      "passed": 6,
+      "total": 6,
+      "time_seconds": 322.8,
+      "tokens": 142633,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": true, "evidence": "57 §N references"},
+        {"text": "has_cross_references", "passed": true, "evidence": "42 cross-references in prose"},
+        {"text": "has_code_excerpts_with_paths", "passed": true, "evidence": "24 of 25 code blocks annotated"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "9 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": true, "evidence": "3 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": true, "evidence": "5 transition phrases"}
+      ]
+    },
+    {
+      "eval_name": "session-tracking",
+      "config": "without_skill",
+      "pass_rate": 0.50,
+      "passed": 3,
+      "total": 6,
+      "time_seconds": 372.3,
+      "tokens": 131479,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": false, "evidence": "No §N references"},
+        {"text": "has_cross_references", "passed": false, "evidence": "No cross-references"},
+        {"text": "has_code_excerpts_with_paths", "passed": true, "evidence": "11 of 33 code blocks annotated"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "4 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": false, "evidence": "0 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": true, "evidence": "3 transition phrases"}
+      ]
+    },
+    {
+      "eval_name": "runtime-core",
+      "config": "with_skill",
+      "pass_rate": 0.67,
+      "passed": 4,
+      "total": 6,
+      "time_seconds": 304.0,
+      "tokens": 155837,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": false, "evidence": "Used S1-S17 notation instead of §N"},
+        {"text": "has_cross_references", "passed": false, "evidence": "Has 20+ (SN) cross-refs but used S not §"},
+        {"text": "has_code_excerpts_with_paths", "passed": true, "evidence": "27 code blocks with path annotations"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "7 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": true, "evidence": "3 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": true, "evidence": "10 transition phrases"}
+      ]
+    },
+    {
+      "eval_name": "runtime-core",
+      "config": "without_skill",
+      "pass_rate": 0.33,
+      "passed": 2,
+      "total": 6,
+      "time_seconds": 277.0,
+      "tokens": 146309,
+      "expectations": [
+        {"text": "has_numbered_sections", "passed": false, "evidence": "No §N references"},
+        {"text": "has_cross_references", "passed": false, "evidence": "No cross-references"},
+        {"text": "has_code_excerpts_with_paths", "passed": true, "evidence": "6 of 35 code blocks annotated"},
+        {"text": "has_design_reasoning", "passed": true, "evidence": "8 design reasoning indicators"},
+        {"text": "has_mermaid_diagrams", "passed": false, "evidence": "0 Mermaid diagrams"},
+        {"text": "has_narrative_transitions", "passed": false, "evidence": "2 transition phrases"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "mean_pass_rate": 0.72,
+      "mean_time_seconds": 293.7,
+      "mean_tokens": 125697
+    },
+    "without_skill": {
+      "mean_pass_rate": 0.33,
+      "mean_time_seconds": 305.7,
+      "mean_tokens": 121314
+    },
+    "delta": {
+      "pass_rate": "+0.39",
+      "time_seconds": "-12.0",
+      "tokens": "+4383"
+    }
+  },
+  "notes": [
+    "Two of three with-skill runs used 'S1' notation instead of '§1', causing has_numbered_sections and has_cross_references assertions to fail despite having extensive cross-referencing with (SN) format. The skill needs to be more explicit about using the § symbol.",
+    "Without-skill runs never produced Mermaid diagrams (0/3), while with-skill always did (3/3). This is the most discriminating assertion.",
+    "Code path annotations were dramatically better with-skill: ~24/25 blocks annotated vs ~6/35 baseline.",
+    "Design reasoning was present in both conditions, but with-skill outputs were more structured about it."
+  ]
+}

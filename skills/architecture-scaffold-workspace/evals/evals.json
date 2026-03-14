@@ -1,0 +1,26 @@
+{
+  "skill_name": "architecture-scaffold",
+  "evals": [
+    {
+      "id": 1,
+      "name": "god-module-split",
+      "prompt": "I have a Rust project at {test_project_path} with a god object that needs to be split up. The architecture assessment is at {test_project_path}/ASSESSMENT.md. Please scaffold the new architecture — I want the full type skeleton with all the modules, traits, and types defined but no implementation logic. Prove it compiles before moving on.",
+      "expected_output": "A compilable type skeleton with ~9 modules matching the assessment's recommendations, correct dependency direction, and a migration manifest mapping old code to new stubs",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "vague-spec",
+      "prompt": "I have a Rust project at {test_project_path}. Here's a quick review someone did: {test_project_path}/ASSESSMENT_VAGUE.md. Can you scaffold a better architecture from this?",
+      "expected_output": "The agent should ask clarifying questions about what modules to extract, what the dependency rules should be, and what level of granularity the user wants — rather than guessing and producing a skeleton from an underspecified assessment",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "circular-dependency",
+      "prompt": "I have a Rust project at {test_project_path}. The architecture assessment is at {test_project_path}/ASSESSMENT_CIRCULAR.md. Please scaffold the new architecture following this assessment exactly.",
+      "expected_output": "The agent should detect the circular dependency between task_service and project_service during Phase 1 (module map) or Phase 2 (compilation), flag it as an architectural problem, and propose a resolution (e.g., extract shared query logic into a separate module) rather than silently working around it",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "skill_name": "architectural-refactor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have an assessment of my project's architecture in ASSESSMENT.md. It recommends splitting a god module into focused modules. Please execute the refactoring.",
+      "expected_output": "A chunked refactoring plan in refactor-plan.md, a manifest in refactor-manifest.json, the god module split into auth.js/users.js/data.js/email.js, all imports updated, and all 17 tests still passing.",
+      "files": [
+        "test-project/src/core.js",
+        "test-project/src/api.js",
+        "test-project/src/workers.js",
+        "test-project/tests/run.js",
+        "test-project/ASSESSMENT.md",
+        "test-project/package.json"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I started a refactoring yesterday but didn't finish. The manifest and plan are already in the project. Pick up where I left off and continue the refactoring.",
+      "expected_output": "Agent reads the manifest, identifies the next pending chunk, and continues executing from that point without re-doing completed work. All tests pass after each chunk.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have an assessment of my project's architecture in ASSESSMENT.md. Execute the refactoring. Note: the test for handleUploadCSV is sensitive to import paths — if you change how data.js is imported in api.js, the test may break.",
+      "expected_output": "When a chunk causes test failures, the agent stops, logs the failure, and asks the user how to proceed rather than silently working around it or continuing to the next chunk.",
+      "files": [
+        "test-project/src/core.js",
+        "test-project/src/api.js",
+        "test-project/src/workers.js",
+        "test-project/tests/run.js",
+        "test-project/ASSESSMENT.md",
+        "test-project/package.json"
+      ]
+    }
+  ]
+}

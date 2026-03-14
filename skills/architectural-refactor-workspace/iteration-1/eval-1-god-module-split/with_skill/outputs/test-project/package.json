@@ -1,0 +1,9 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node tests/run.js",
+    "typecheck": "echo 'typecheck passed'",
+    "lint": "echo 'lint passed'"
+  }
+}

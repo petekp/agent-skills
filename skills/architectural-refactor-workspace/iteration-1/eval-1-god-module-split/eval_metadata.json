@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "god-module-split",
+  "prompt": "I have an assessment of my project's architecture in ASSESSMENT.md. It recommends splitting a god module into focused modules. Please execute the refactoring.",
+  "assertions": []
+}

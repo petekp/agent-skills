@@ -1,0 +1,97 @@
+{
+  "plan_file": "refactor-plan.md",
+  "assessment_source": "ASSESSMENT.md",
+  "created": "2026-03-05T00:00:00.000Z",
+  "total_chunks": 8,
+  "current_chunk": 8,
+  "status": "completed",
+  "preflight_passed": true,
+  "verification": {
+    "test": "node tests/run.js",
+    "typecheck": "npm run typecheck",
+    "lint": "npm run lint",
+    "detected_at": "2026-03-05T00:00:00.000Z"
+  },
+  "chunks": [
+    {
+      "id": 1,
+      "name": "Extract auth.js from core.js",
+      "status": "completed",
+      "depends_on": [],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:01:00.000Z",
+      "completed_at": "2026-03-05T00:02:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Extract email.js from core.js",
+      "status": "completed",
+      "depends_on": [1],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:02:00.000Z",
+      "completed_at": "2026-03-05T00:03:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Extract data.js from core.js",
+      "status": "completed",
+      "depends_on": [2],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:03:00.000Z",
+      "completed_at": "2026-03-05T00:04:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Extract users.js from core.js",
+      "status": "completed",
+      "depends_on": [3],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:04:00.000Z",
+      "completed_at": "2026-03-05T00:05:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Update api.js imports to use new modules",
+      "status": "completed",
+      "depends_on": [4],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:05:00.000Z",
+      "completed_at": "2026-03-05T00:06:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Update workers.js imports to use new modules",
+      "status": "completed",
+      "depends_on": [4],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:06:00.000Z",
+      "completed_at": "2026-03-05T00:07:00.000Z"
+    },
+    {
+      "id": 7,
+      "name": "Update tests to use new modules",
+      "status": "completed",
+      "depends_on": [5, 6],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:07:00.000Z",
+      "completed_at": "2026-03-05T00:08:00.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Delete core.js",
+      "status": "completed",
+      "depends_on": [7],
+      "verification": "pass: 17/17 tests, typecheck, lint",
+      "commit_sha": "N/A (no git)",
+      "started_at": "2026-03-05T00:08:00.000Z",
+      "completed_at": "2026-03-05T00:09:00.000Z"
+    }
+  ]
+}

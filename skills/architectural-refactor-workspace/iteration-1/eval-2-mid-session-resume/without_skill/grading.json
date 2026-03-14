@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "mid-session-resume",
+  "configuration": "without_skill",
+  "expectations": [
+    { "text": "Read manifest before starting work", "passed": true, "evidence": "Baseline read the manifest and identified completed/pending chunks" },
+    { "text": "Did not redo completed chunk 1 (auth extraction)", "passed": true, "evidence": "Started at chunk 2, did not touch auth.js" },
+    { "text": "Started at correct chunk (chunk 2: email)", "passed": true, "evidence": "First action was extracting email module (chunk 2)" },
+    { "text": "Manifest updated to reflect completion", "passed": true, "evidence": "Manifest shows status: completed, all 4 chunks completed" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "node tests/run.js: 17 passed, 0 failed" }
+  ]
+}

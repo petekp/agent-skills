@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "mid-session-resume",
+  "prompt": "I started a refactoring yesterday but didn't finish. The manifest and plan are already in the project. Pick up where I left off and continue the refactoring.",
+  "assertions": []
+}

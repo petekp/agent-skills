@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "verification-failure",
+  "configuration": "without_skill",
+  "expectations": [
+    { "text": "Plan file created", "passed": false, "evidence": "No plan file — went straight to refactoring" },
+    { "text": "Verification performed at each chunk gate", "passed": false, "evidence": "No chunked execution or intermediate verification" },
+    { "text": "Log records execution history", "passed": false, "evidence": "No log file created" },
+    { "text": "All 4 domain modules extracted", "passed": true, "evidence": "src/ contains auth.js, users.js, data.js, email.js" },
+    { "text": "God module removed", "passed": false, "evidence": "core.js still present as facade — not fully removed per assessment" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "17 passed, 0 failed" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "vague-spec",
+  "prompt": "I have a Rust project. Here's a quick review someone did: ASSESSMENT_VAGUE.md. Can you scaffold a better architecture from this?",
+  "assertions": [
+    {"id": "asks_clarifying_questions", "description": "Identifies what's missing from the spec and asks specific questions"},
+    {"id": "identifies_missing_modules", "description": "Flags that the spec doesn't specify which modules to extract"},
+    {"id": "identifies_missing_dependencies", "description": "Flags that dependency rules are unspecified"},
+    {"id": "does_not_blindly_scaffold", "description": "Avoids producing a full committed-to skeleton from an underspecified assessment"}
+  ]
+}

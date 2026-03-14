@@ -1,0 +1,26 @@
+{
+  "eval_id": "eval-2-vague-spec",
+  "variant": "with_skill",
+  "expectations": [
+    {
+      "text": "asks_clarifying_questions",
+      "passed": true,
+      "evidence": "The response explicitly refuses to proceed and lists 15+ specific questions organized into 5 categories: module boundaries, abstraction strategy, type organization, dependency direction, and scope of change. Each category contains concrete, actionable questions tied to the codebase."
+    },
+    {
+      "text": "identifies_missing_modules",
+      "passed": true,
+      "evidence": "The gap analysis explicitly states 'No module list. The assessment names two extraction candidates (data layer, notification stuff) out of at least seven distinct concerns in the god object.' It enumerates all seven concerns (Task CRUD, project management, user management, persistence, notifications, analytics, filtering/search) and asks which should become modules."
+    },
+    {
+      "text": "identifies_missing_dependencies",
+      "passed": true,
+      "evidence": "The gap analysis lists 'No dependency rules' as a critical blocking gap. The response dedicates an entire section (Section 4: Dependency Direction) to this, asking about persistence-domain coupling, push vs. pull notification models, and specific layering strategies. The tentative module map marks dependency rules as unconfirmed."
+    },
+    {
+      "text": "does_not_blindly_scaffold",
+      "passed": true,
+      "evidence": "No skeleton code was written. The response states 'I need to stop here before producing a module map or writing any code.' The tentative module map is clearly marked 'UNCONFIRMED -- Needs User Sign-Off' and 'Status: BLOCKED -- Awaiting user confirmation.' It lists 7 unresolved design decisions. The conclusion says 'any skeleton I build would be my architectural opinion, not a scaffold of the user's intent.'"
+    }
+  ]
+}

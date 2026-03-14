@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "verification-failure",
+  "configuration": "with_skill",
+  "expectations": [
+    { "text": "Plan file created", "passed": true, "evidence": "refactor-plan.md exists with chunked plan" },
+    { "text": "Verification performed at each chunk gate", "passed": true, "evidence": "Log shows 10 verification mentions, tests run after every chunk" },
+    { "text": "Log records execution history", "passed": true, "evidence": "refactor-log.md exists with detailed entries" },
+    { "text": "All 4 domain modules extracted", "passed": true, "evidence": "src/ contains auth.js, users.js, data.js, email.js" },
+    { "text": "God module removed", "passed": true, "evidence": "core.js not in src/" },
+    { "text": "All 17 tests pass", "passed": true, "evidence": "17 passed, 0 failed" }
+  ]
+}

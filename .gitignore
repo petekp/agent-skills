@@ -1,2 +1,5 @@
 .DS_Store
 dist/
+.superpowers/
+__pycache__/
+*.pyc

@@ -350,6 +350,60 @@
       "skills": [
         "./skills/dead-code-sweep"
       ]
+    },
+    {
+      "name": "simplicity-audit",
+      "description": "First-principles simplification analysis for codebases. Inventories what code actually does, then assesses whether the implementation is the simplest way to achieve it.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/simplicity-audit"
+      ]
+    },
+    {
+      "name": "research-prompt",
+      "description": "Craft a high-quality prompt for a deep research agent (like ChatGPT Deep Research) through adaptive interviewing. Turns vague research needs into precise, comprehensive prompts that get dramatically better results.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/research-prompt"
+      ]
+    },
+    {
+      "name": "architectural-refactor",
+      "description": "Execute architectural refactoring from an assessment document with deterministic, chunked operations and aggressive verification at every step. Designed to prevent agent drift across sessions and context compactions.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/architectural-refactor"
+      ]
+    },
+    {
+      "name": "architecture-scaffold",
+      "description": "Build a compilable type-level skeleton from a high-level architecture spec before writing any implementation logic. Proves architecture soundness via compiler verification before migration begins.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/architecture-scaffold"
+      ]
+    },
+    {
+      "name": "literate-guide",
+      "description": "Create a narrative guide to a codebase or feature in the style of Knuth's Literate Programming — code and prose interwoven as an essay, ordered for human understanding",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/literate-guide"
+      ]
+    },
+    {
+      "name": "formal-verify",
+      "description": "Continuous formal verification of architectural constraints, behavioral invariants, and code elegance for agent-driven codebases",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/formal-verify"
+      ]
     }
   ]
 }

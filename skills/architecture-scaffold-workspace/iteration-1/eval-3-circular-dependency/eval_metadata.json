@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "circular-dependency",
+  "prompt": "I have a Rust project. The architecture assessment is at ASSESSMENT_CIRCULAR.md. Please scaffold the new architecture following this assessment exactly.",
+  "assertions": [
+    {"id": "detects_circular_dependency", "description": "Explicitly identifies the circular dependency between task_service and project_service"},
+    {"id": "proposes_resolution", "description": "Proposes a concrete fix (e.g., extract shared query module, dependency inversion)"},
+    {"id": "does_not_silently_work_around", "description": "Flags the issue as an architectural problem rather than silently making it compile"},
+    {"id": "resolves_before_scaffolding", "description": "Resolves the cycle BEFORE writing the skeleton (Phase 1), not after"}
+  ]
+}
