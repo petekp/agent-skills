@@ -404,6 +404,15 @@
       "skills": [
         "./skills/formal-verify"
       ]
+    },
+    {
+      "name": "kickoff",
+      "description": "Conduct a thorough alignment interview before starting a non-trivial task — take-homes, ambiguous problems, design challenges. Produces a shared kickoff brief.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/kickoff"
+      ]
     }
   ]
 }
