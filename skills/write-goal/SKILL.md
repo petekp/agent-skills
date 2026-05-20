@@ -1,105 +1,155 @@
 ---
 name: write-goal
-description: Turn the prompt supplied with this skill into a concise, auditable Codex Goal or explain why a Goal is not the right fit. Use when the user asks to draft, formulate, rewrite, tighten, or create a `/goal` from a plain-language task, especially for multi-step work that needs a durable objective, evidence-based completion, constraints, iteration policy, and a default adversarial review loop.
+description: Compile a plain-language task into a concise, auditable Codex or Claude Code `/goal`, or explain why a normal prompt fits better. Use when the user asks to draft, formulate, rewrite, tighten, or create a goal for multi-step work that needs a durable objective, transcript-visible proof, constraints, bounded stop conditions, host-aware operation, and risk-based review depth.
 ---
 
 # Write Goal
 
 ## Overview
 
-Turn the user's request into a compact Codex Goal that can guide continued work until the evidence says it is done. Draft the goal; do not activate it unless the user explicitly asks you to start or set the Goal.
+Act as a host-aware goal compiler, not a generic prompt rewriter. Turn the user's request into a compact `/goal` that has a clear definition of done, operating instructions, proof the evaluator can see, and a bounded stop policy. Draft the goal; do not activate it unless the user explicitly asks you to start or set the goal.
 
 ## Workflow
 
-1. Extract the actual task from the prompt that invoked this skill. Ignore the skill mention itself.
-2. Decide whether a Goal is appropriate. Use a Goal for durable, multi-step work with an auditable finish line. For one-line edits, simple explanations, or vague improvement requests without a checkable end state, say that a normal prompt is a better fit and offer the closest tightened prompt instead.
-3. Draft one Goal that includes:
-   - outcome: what must be true when finished
-   - verification surface: tests, commands, artifacts, logs, benchmarks, source evidence, or review output that proves it
-   - constraints: behavior, scope, public APIs, files, style, budget, or safety limits that must remain intact
-   - boundaries: allowed repos, files, tools, data, and resources
-   - iteration policy: how Codex should choose the next action after each result
-   - blocked stop condition: when to stop and what evidence, attempted paths, blocker, and needed input to report
-4. Keep it as short as the evidence contract allows. Prefer one compact paragraph. Do not list every component if the sentence already carries it.
-5. Include the default adversarial review loop unless the user explicitly opts out.
-6. If required details are missing, make conservative assumptions inline. Ask only when missing information would make the Goal unsafe or impossible to verify.
+1. Extract the real task from the prompt that invoked this skill. Ignore the skill mention itself.
+2. Identify the target host:
+   - Claude Code: optimize for its `/goal` completion-condition evaluator.
+   - Codex: optimize for a durable Codex Goal and long-running validation loop.
+   - Unspecified: produce a portable `/goal` and call out host assumptions only if they matter.
+3. Decide whether a goal is appropriate. Use a goal for durable, multi-step work with a verifiable end state. For one-line edits, simple explanations, or vague improvement requests with no checkable finish line, return a tightened normal prompt instead.
+4. Compile the goal in two layers:
+   - Definition of done: one primary end state, the proof surface, required constraints, scope boundaries, and any turn/time/cost fuse.
+   - Operating instructions: how the agent should choose the next action, what evidence to surface each iteration, what completion receipt to print, and when to stop as blocked.
+5. Choose review depth from the risk tiers below. Do not blindly attach the heaviest review loop to every goal.
+6. Keep the final `/goal` short enough to be readable. Prefer one compact block, but use labels like `Definition of done:` and `Operating instructions:` when they make evaluator behavior clearer.
+7. If details are missing, make conservative assumptions inline. Ask only when missing information would make the goal unsafe or impossible to verify.
 
-## Task Fit
+## Host Semantics
 
-- Coding or refactoring: name the behavior or code state, the relevant tests or build commands, the scope boundary, and what must not regress.
-- Debugging or flaky tests: include reproduction evidence, focused verification, regression checks, and the point where missing evidence becomes a blocker.
-- Research or audits: require a claim inventory, evidence mapping, confidence labels, and a final report that separates confirmed, supported, blocked, and uncertain claims.
-- Docs or content: name the artifact, reader outcome, source-of-truth checks, build or link checks, and terminology constraints.
-- Vague requests: narrow the task with explicit assumptions if there is a plausible evidence surface. If there is not, return a tightened normal prompt instead of a Goal.
-- One-off tasks: do not force a Goal. Say it is better as a normal prompt and provide that prompt.
+Codex goals are for long-running work that should keep progressing across turns toward a verifiable stopping condition. Good Codex goals name the durable objective, validation loop, checkpoint evidence, scope boundary, and pause/blocked behavior.
 
-## Review Loop
+Claude Code `/goal` sets a session-scoped completion condition. A small evaluator model checks the condition after each turn. It does not run commands or read files independently, so the goal must require Claude to surface proof in the transcript. A strong Claude Code condition has one measurable end state, a stated check such as a passing command or empty queue, and constraints that matter. Include a turn, time, or cost bound when runaway work is a risk. Claude Code goals are limited to 4,000 characters and require Claude Code v2.1.139 or later.
 
-Use this default unless the user opts out:
+## Goal Anatomy
 
-```text
-Before completion, adversarially review the result against this Goal, classify findings by severity, and resolve all medium, high, and critical findings. After a review has no medium-or-above findings, run one more adversarial review to catch anything the prior review missed. Mark the Goal complete only after two consecutive adversarial reviews have no medium-or-above findings. If the follow-up review finds any medium-or-above issue, resolve it and restart the two-clean-review requirement.
-```
+Every compiled goal should answer these questions:
 
-Treat severity as impact on the Goal:
-
-- Critical or high: the objective is not met, evidence is false or missing, scope is unsafe, or the result likely regresses a stated constraint.
-- Medium: the result may pass superficially but leaves a meaningful gap in evidence, scope, maintainability, or user-facing quality.
-- Low: polish, wording, or optional improvements that do not block completion.
-
-## Goal Shape
+- End state: what is true when the work is done?
+- Proof: what exact command result, artifact, log line, review output, source citation, or checklist must appear in the transcript?
+- Constraints: what behavior, APIs, files, style rules, budgets, or safety boundaries must not be violated?
+- Scope: which repos, files, tools, data, and resources are allowed?
+- Operating loop: after each result, how should the agent inspect evidence and choose the next action?
+- Stop policy: when should the agent stop instead of continuing, and what blocker report should it print?
+- Receipt: what changed files, exact checks, remaining risks, and review outcome must be printed before completion?
 
 Prefer this shape:
 
 ```text
-/goal <desired end state>, verified by <specific evidence>, while preserving <constraints>. Use <allowed inputs, tools, files, and boundaries>. Between iterations, <how to inspect results and choose the next best action>. Before completion, adversarially review the result against this Goal, classify findings by severity, and resolve all medium, high, and critical findings. After a clean review, run one more adversarial review; complete only after two consecutive reviews have no medium-or-above findings. If blocked or no defensible path remains, stop with the attempted paths, evidence gathered, unresolved findings, blocker, and next input needed.
+/goal Definition of done: <one measurable end state>, verified by <specific proof surfaced in the transcript>, while preserving <constraints and scope>. Operating instructions: use <allowed inputs/tools/files>, inspect <latest evidence> between iterations, make the smallest defensible next move, and print a completion receipt with <changed files/artifacts, exact check results, review outcome, and remaining risks>. Review depth: <risk tier and required review loop>. Stop if <blocked condition, no defensible path, or turn/time/cost bound> with <attempted paths, evidence gathered, blocker, unresolved findings, and next input needed>.
 ```
 
-Keep the final Goal narrow enough to audit but broad enough to let Codex choose the next action. Do not prescribe every implementation step unless the user already did.
+Do not prescribe every implementation step unless the user already did. Leave enough room for the agent to adapt.
+
+## Risk-Based Review Depth
+
+Use the lightest review loop that protects the user:
+
+- Low risk: docs, small content edits, read-only research, or local cleanup with no runtime behavior. Require one self-review or adversarial review, resolve medium-or-above findings, then complete.
+- Medium risk: normal code changes, refactors, tests, generated artifacts, or docs that describe command or behavior claims without changing them. Require one adversarial review plus focused verification; resolve all medium, high, and critical findings before completion.
+- High risk: changes to activation, packaging, command behavior, public APIs, migrations, security, data loss, permissions, release/publish flows, or broad cross-file behavior. Require two consecutive adversarial reviews with no medium-or-above findings. If a follow-up review finds a medium-or-above issue, resolve it and restart the two-clean-review count.
+
+Treat severity as impact on the goal:
+
+- Critical or high: the objective is not met, evidence is false or missing, scope is unsafe, or a stated constraint likely regresses.
+- Medium: the result may pass superficially but leaves a meaningful gap in evidence, scope, maintainability, or user-facing quality.
+- Low: polish or optional improvement that does not block the goal.
+
+## Task Fit
+
+- Coding or refactoring: include behavior or code state, focused tests/build commands, regression checks, changed-file receipt, and what must not regress.
+- Debugging or flaky tests: include reproduction evidence, hypothesis updates, focused verification, repeated pass criteria, and the point where missing evidence becomes a blocker.
+- Research or audits: require a claim inventory, evidence mapping, confidence labels, source links or file citations, and a final report that separates confirmed, supported, blocked, and uncertain claims.
+- Docs or content: name the artifact, reader outcome, source-of-truth checks, build/link checks, terminology constraints, and review depth based on whether command semantics are involved.
+- Vague requests: narrow with explicit assumptions if there is a plausible proof surface. If there is not, return a tightened normal prompt instead.
+- One-off tasks: do not force a goal. Provide the better normal prompt and one sentence explaining why.
 
 ## Output
 
 Return:
 
-1. `Recommended Goal`: a single ready-to-use `/goal ...` block.
+1. `Recommended Goal`: a ready-to-use `/goal ...` block.
 2. `Assumptions`: only if you filled gaps that matter.
-3. `Why This Works`: only when useful or requested; one or two short bullets naming the evidence surface and review loop.
+3. `Compiler Notes`: one or two bullets naming the host, proof surface, stop bound, and review tier.
 
-If a Goal is not appropriate, return:
+If a goal is not appropriate, return:
 
 1. `Better As A Prompt`: a concise normal prompt.
 2. `Why Not A Goal`: one sentence explaining the missing durable objective or verification surface.
 
-Keep the answer concise. The user came for the Goal, not a lecture about Goals.
+Keep the answer concise. The user came for the goal, not a lecture about goals.
 
 ## Examples
 
 User prompt:
 
 ```text
-Use $write-goal to turn this into a Goal: keep working on this flaky checkout test until it is fixed or we know exactly why it cannot be fixed.
+Use $write-goal for Claude Code: keep working on this flaky checkout test until it is fixed or we know exactly why it cannot be fixed.
 ```
-
-Output:
 
 Recommended Goal:
 
 ```text
-/goal Make the flaky checkout test pass reliably on the current branch, verified by reproducing the failure when possible and then passing the focused checkout test repeatedly plus the relevant correctness suite, while preserving public checkout behavior and existing test coverage. Use the checkout code, related fixtures, test logs, and local test commands. Between iterations, inspect the latest failure evidence, make the smallest defensible change, rerun focused verification, and update the hypothesis. Before completion, adversarially review the result against this Goal, classify findings by severity, and resolve all medium, high, and critical findings. After a clean review, run one more adversarial review; complete only after two consecutive reviews have no medium-or-above findings. If the failure cannot be reproduced or no valid path remains, stop with attempted reproductions, evidence gathered, unresolved findings, blocker, and the next input needed.
+/goal Definition of done: the flaky checkout test either passes reliably or has a transcript-supported blocker, verified by reproducing the failure when possible and then surfacing exact focused test results plus the relevant regression command output, while preserving public checkout behavior and existing test coverage. Operating instructions: use the checkout code, fixtures, local logs, and test commands; after each failure, update the hypothesis, make the smallest defensible change, and rerun focused verification. Print a completion receipt with changed files, exact commands and exits, review outcome, and remaining risks. Review depth: medium, with one adversarial review and all medium-or-above findings resolved. Stop after 20 turns, if the failure cannot be reproduced after reasonable attempts, or if no valid path remains; report attempted reproductions, evidence gathered, blocker, unresolved findings, and next input needed.
 ```
 
 User prompt:
 
 ```text
-Use $write-goal: improve the docs for Goals.
+Use $write-goal for Codex: migrate the billing module to the new API.
 ```
-
-Output:
 
 Recommended Goal:
 
 ```text
-/goal Produce a clearer Goals documentation page that explains when to use Goals, the command lifecycle, and two realistic examples, verified by the local docs build and by checking that every referenced command matches current Codex behavior, while preserving existing terminology and avoiding unrelated documentation churn. Use the existing docs, current CLI behavior, and related tests or build commands. Between iterations, compare the page against the intended reader workflow, patch the highest-impact gap, and rerun relevant verification. Before completion, adversarially review the result against this Goal, classify findings by severity, and resolve all medium, high, and critical findings. After a clean review, run one more adversarial review; complete only after two consecutive reviews have no medium-or-above findings. If verification cannot run or command behavior cannot be confirmed, stop with attempted checks, evidence gathered, unresolved findings, blocker, and the next input needed.
+/goal Definition of done: the billing module uses the new API at every intended call site, verified by source inspection surfaced in the transcript plus passing focused billing tests and the relevant build/typecheck command, while preserving public billing behavior, existing data contracts, and unrelated files. Operating instructions: use the billing code, migration docs, tests, and local commands; work in small slices, inspect failures after each run, and keep a progress receipt of migrated call sites. Print a completion receipt with changed files, exact validation results, unresolved risks, and review outcome. Review depth: high because this is a behavior-affecting migration; require two consecutive adversarial reviews with no medium-or-above findings before completion. Stop if verification cannot run, API behavior cannot be confirmed, or no defensible path remains; report attempted paths, evidence, blocker, and next input needed.
+```
+
+Bad goal:
+
+```text
+/goal Improve the docs.
+```
+
+Better goal:
+
+```text
+/goal Definition of done: the Goals docs clearly explain when to use `/goal`, how to set/check/clear one, and two realistic examples, verified by a successful docs build and transcript-visible source checks against the current host docs, while preserving existing terminology and avoiding unrelated docs churn. Operating instructions: edit only the relevant docs, compare each claim to source docs, and print changed files, exact build result, review outcome, and remaining risks. Review depth: medium because command semantics are described; run one adversarial review and resolve medium-or-above findings. Stop if source behavior cannot be confirmed or validation cannot run, with attempted checks and next input needed.
+```
+
+Bad goal:
+
+```text
+/goal Make the app better and faster.
+```
+
+Better As A Prompt:
+
+```text
+Inspect the app and propose the three highest-impact improvements for performance or UX, with evidence for each and a suggested verification command.
+```
+
+Why Not A Goal: The request has multiple undefined outcomes and no single proof surface.
+
+Bad goal:
+
+```text
+/goal All tests pass.
+```
+
+Better goal:
+
+```text
+/goal Definition of done: the currently failing test suite passes without hiding or deleting coverage, verified by transcript-visible output from the failing command rerun plus a clean `git diff` review showing no unrelated test weakening. Operating instructions: identify the first failure, fix the smallest root cause, rerun focused checks before broad checks, and print changed files, exact commands/exits, review outcome, and remaining risks. Review depth: medium; run one adversarial review and resolve medium-or-above findings. Stop after 15 turns, if the suite cannot be run, or if failures require product decisions; report evidence, blocker, and next input needed.
 ```
 
 User prompt:
@@ -107,8 +157,6 @@ User prompt:
 ```text
 Use $write-goal: explain this error message.
 ```
-
-Output:
 
 Better As A Prompt:
 

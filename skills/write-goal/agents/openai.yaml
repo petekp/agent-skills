@@ -1,4 +1,4 @@
 interface:
   display_name: "Write Goal"
-  short_description: "Draft or reject a Codex Goal"
-  default_prompt: "Use $write-goal to turn this request into a concise Codex Goal, or explain why a normal prompt fits better."
+  short_description: "Draft or reject a Codex or Claude Code goal"
+  default_prompt: "Use $write-goal to turn this request into a concise Codex or Claude Code `/goal`, or explain why a normal prompt fits better."
