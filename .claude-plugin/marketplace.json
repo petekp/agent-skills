@@ -280,15 +280,6 @@
       ]
     },
     {
-      "name": "shape-up",
-      "description": "Guided Shape Up workflow for taking projects from idea to working software. Orchestrates shaping and breadboarding through Frame, Shape, Breadboard, Slice, Build phases.",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/shape-up"
-      ]
-    },
-    {
       "name": "agent-telemetry",
       "description": "Make application behavior visible to coding agents by exposing structured logs and telemetry endpoints. Guides adding structured logging, exposing logs for agent access, and documenting how to query them.",
       "source": "./",
@@ -412,6 +403,24 @@
       "strict": false,
       "skills": [
         "./skills/kickoff"
+      ]
+    },
+    {
+      "name": "write-goal",
+      "description": "Compile a plain-language task into a concise, auditable Codex or Claude Code /goal with a clear definition of done, transcript-visible proof, constraints, bounded stop conditions, and risk-based review depth",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/write-goal"
+      ]
+    },
+    {
+      "name": "deep-work",
+      "description": "Structured development workflow that separates research, planning, and implementation into distinct phases with persistent markdown artifacts. Use for any non-trivial feature, refactor, bug investigation, or codebase change.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/deep-work"
       ]
     }
   ]
